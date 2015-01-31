@@ -1,0 +1,13 @@
+<!doctype html>
+<html>
+    <head>
+        <title>{% block title %} {% endblock %}</title>
+        {% include "header.html" %}
+        {% block external %}{% endblock %}
+    </head>
+    <body>
+        {% include "menu.html"  %}
+        {% block head %}{% endblock %}
+        {% block content %}{% endblock %}
+    </body>
+</html>

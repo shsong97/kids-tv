@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+{% for kid in kids_items %}
+<div class="white-box">
+    <table>
+        <td>
+            <a href="{{ kid.url }}"><img src="{{ kid.image_url }}"></a>
+        </td>
+        <td>
+            <a href="{{ kid.url }}">{{ kid.title }}</a>
+        </td>
+        </table>
+</div>
+{% endfor %}
+{% endblock %}
