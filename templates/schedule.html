@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+Schedule
+<form action=".">
+<input type="text" name="search_field">
+<button type="submit">Search</button>
+</form>
+{% for kid_title,kid_url,kid_image in kids_items %}
+<div class="white-box">
+    <table>
+        <td>
+            <a href="{{ kid_url }}" target="_blank"><img src="{{ kid_image }}"></a>
+        </td>
+        <td>
+            <a href="{{ kid_url }}">{{ kid_title }}</a>
+        </td>
+    </table>
+</div>
+{% endfor %}
+{% endblock %}

@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
-<h4>{{ name }}</h4>
+Schedule
+<form action=".">
+<input type="text" name="search_field" value="{{ search_field }}">
+<button type="submit">Search</button>
+</form>
 {% for kid in kids_items %}
 <div class="white-box">
     <table>

@@ -21,7 +21,7 @@
                     </a>
                     <ul class="dropdown-menu" role="menu">
                         {% for cat2 in cat1.category2_set.all %}
-                        <li role="presentation"><a href="/{{ cat1.title }}/{{ cat2.title }}" role="menuitem">{{ cat2.title }}</a></li>
+                        <li role="presentation"><a href="/watch/{{ cat1.title }}/{{ cat2.title }}" role="menuitem">{{ cat2.title }}</a></li>
                         {% endfor %}
                     </ul>
                     </li>

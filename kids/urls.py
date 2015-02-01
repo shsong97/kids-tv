@@ -7,7 +7,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', 'kid.views.home'),
-    url(r'^(\w+)$', 'kid.views.category1'),
-    url(r'^(\w+)/(\w+)$', 'kid.views.category2'),
+    url(r'^schedule/$', 'kid.views.schedule'),
+    url(r'^search/$', 'kid.views.search'),
+    url(r'^watch/([\%\w|\s]+)$', 'kid.views.home'),
+    url(r'^watch/([\%\w|\s]+)/([\%\w|\s]+)$', 'kid.views.home'),
     url(r'^admin/', include(admin.site.urls)),
 )
