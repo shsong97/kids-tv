@@ -13,10 +13,9 @@ class AdminCategory2(admin.ModelAdmin):
 
 
 class AdminKid(admin.ModelAdmin):
-    list_display = ("title", "url", "image_url", "create_date", "update_date", )
-    list_filter = ("title", "create_date",)
-    ordering = ("create_date",)
-    search_fields = ("title",)
+    list_display = ("title", "url", "update_date", )
+    list_filter = ("update_date",)
+    ordering = ("update_date",)
 
 
 admin.site.register(Category1, AdminCategory1)

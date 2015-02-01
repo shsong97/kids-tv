@@ -1,10 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
-Schedule
 <form action=".">
-<input type="text" name="search_field">
-<button type="submit">Search</button>
+<input class="input-medium search-query" type="text" name="search_field" value="{{ search_field }}">
+<button class="btn" type="submit">Search</button>
 </form>
+<form action="/add/" method="POST">
+{% csrf_token %}
+<select name="category2">
+{% for cat2 in category2 %}
+<option value="{{ cat2.title }}">{{ cat2.title }}</option>
+{% endfor %}
+</select>
+<button class="btn" type="submit">Add</button>
 {% for kid_title,kid_url,kid_image in kids_items %}
 <div class="white-box">
     <table>
@@ -14,7 +21,30 @@ Schedule
         <td>
             <a href="{{ kid_url }}">{{ kid_title }}</a>
         </td>
+        <td><input type="checkbox" name="check" id="check"></td>
     </table>
 </div>
+<input type="hidden" name="kid_title" value ="{{ kid_title }}">
+<input type="hidden" name="kid_url" value ="{{ kid_url }}">
+<input type="hidden" name="kid_image" value ="{{ kid_image }}">
 {% endfor %}
+</form>
+
+<script>
+/*
+    $(document).ready(function(){
+        $("#joinBtn").click(function(){
+            var name=$("#name").val();
+            var username=$("#username").val();
+            var password=$("#password").val();
+            
+            if(name != "" && username != "" && password != "")
+                doJoin();
+            else
+                alert("fill all forms");
+        });
+        $("#adminBtn").click(goAdmin);
+    });
+*/
+</script>
 {% endblock %}

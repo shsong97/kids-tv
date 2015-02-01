@@ -36,23 +36,23 @@ def home(request, cat_name1='All', cat_name2=''):
 
 def schedule(request):
     search_url = 'https://www.youtube.com/results?search_query='
-    search_title = ''
+    search_field = ''
     if request.GET.has_key('search_field'):
         if request.GET['search_field'] is not None:
-            search_title=request.GET['search_field']
+            search_field=request.GET['search_field']
     
     from bs4 import BeautifulSoup
     import urllib
 
     youtube_url ='https://www.youtube.com'
-    url = youtube_url + '/results?search_query=' + search_title.encode('utf-8')
+    url = youtube_url + '/results?search_query=' + search_field.encode('utf-8')
     html_doc = urllib.urlopen(url)
     soup = BeautifulSoup(html_doc)
     links = soup.findAll('div', attrs={'class':'yt-lockup-dismissable'})
 
     kids_items = []
     
-    if search_title != '':
+    if search_field != '':
         for link in links:
             title = link.find('h3').find('a')['title']
             h_url = youtube_url + link.find('h3').find('a')['href']
@@ -69,9 +69,12 @@ def schedule(request):
             kids_items.append( (title,h_url,image_url ))
 
     category1 = Category1.objects.order_by('title')
+    category2 = Category2.objects.order_by('title')
     context = RequestContext(request,
                              {'category1' : category1,
+                              'category2' : category2,
                               'kids_items' : kids_items,
+                              'search_field' : search_field,
                               })
     return render_to_response('schedule.html', context)
 
@@ -91,3 +94,24 @@ def search(request):
                               'search_field' : search_field
                               })
     return render_to_response('search.html', context)
+
+
+def add(request):
+    kid_titles = request.POST.getlist('kid_title')
+    kid_urls = request.POST.getlist('kid_url')
+    kid_images = request.POST.getlist('kid_image')
+    checks = request.POST.getlist('check')
+    cat2 = request.POST['category2']
+    category2 = get_object_or_404(Category2,title=cat2)
+    
+    count = 1
+    for check in checks:
+        if check:
+            kid_title = kid_titles[count]
+            kid_url = kid_urls[count]
+            kid_image = kid_images[count]
+            #print kid_title
+            kid_item = Kid(title = kid_title, url = kid_url, image_url = kid_image, category = category2)
+            kid_item.save()
+        count = count + 1
+    return HttpResponseRedirect('/schedule')

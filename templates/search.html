@@ -2,8 +2,8 @@
 {% block content %}
 Schedule
 <form action=".">
-<input type="text" name="search_field" value="{{ search_field }}">
-<button type="submit">Search</button>
+<input class="input-medium search-query" type="text" name="search_field" value="{{ search_field }}">
+<button class="btn" type="submit">Search</button>
 </form>
 {% for kid in kids_items %}
 <div class="white-box">
