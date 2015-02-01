@@ -10,11 +10,13 @@ class AdminCategory1(admin.ModelAdmin):
 class AdminCategory2(admin.ModelAdmin):
     ordering = ("title",)
     search_fields = ("title",)
+    list_display = ("title", "parent_category", )
 
 
 class AdminKid(admin.ModelAdmin):
-    list_display = ("title", "url", "update_date", )
-    list_filter = ("update_date",)
+    search_fields = ("title",)
+    list_display = ("title", "category", "url", "update_date", )
+    list_filter = ("category", "update_date", )
     ordering = ("update_date",)
 
 

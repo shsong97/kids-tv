@@ -2,6 +2,7 @@
 {% block content %}
 <form action=".">
 <input class="input-medium search-query" type="text" name="search_field" value="{{ search_field }}">
+<input class="input-mini" type="text" name="page" value ="{{ page }}">
 <button class="btn" type="submit">Search</button>
 </form>
 <form action="/add/" method="POST">
@@ -16,7 +17,7 @@
 <div class="white-box">
     <table>
         <td>
-            <a href="{{ kid_url }}" target="_blank"><img src="{{ kid_image }}"></a>
+            <a href="{{ kid_url }}" target="_blank"><img src="{{ kid_image }}" width="64px"></a>
         </td>
         <td>
             <a href="{{ kid_url }}">{{ kid_title }}</a>

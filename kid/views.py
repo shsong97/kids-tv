@@ -31,28 +31,36 @@ def home(request, cat_name1='All', cat_name2=''):
                               'kids_items': kids_items,
 							  'name' : name,
                               })
-    return render_to_response('index.html', context)
+    return render_to_response('search.html', context)
 
 
 def schedule(request):
-    search_url = 'https://www.youtube.com/results?search_query='
     search_field = ''
     if request.GET.has_key('search_field'):
         if request.GET['search_field'] is not None:
             search_field=request.GET['search_field']
-    
+            
+    page = '1'
+    if request.GET.has_key('page'):
+        if request.GET['page'] is not None:
+            page=request.GET['page']
+
+    page_url = '&page=' + page
+
+    category1 = Category1.objects.order_by('title')
+    category2 = Category2.objects.order_by('title')
+                              
     from bs4 import BeautifulSoup
     import urllib
 
-    youtube_url ='https://www.youtube.com'
-    url = youtube_url + '/results?search_query=' + search_field.encode('utf-8')
-    html_doc = urllib.urlopen(url)
-    soup = BeautifulSoup(html_doc)
-    links = soup.findAll('div', attrs={'class':'yt-lockup-dismissable'})
-
     kids_items = []
-    
     if search_field != '':
+        youtube_url ='https://www.youtube.com'
+        url = youtube_url + '/results?search_query=' + search_field.encode('utf-8') + page_url
+        html_doc = urllib.urlopen(url)
+        soup = BeautifulSoup(html_doc)
+        links = soup.findAll('div', attrs={'class':'yt-lockup-dismissable'})
+        
         for link in links:
             title = link.find('h3').find('a')['title']
             h_url = youtube_url + link.find('h3').find('a')['href']
@@ -68,13 +76,12 @@ def schedule(request):
                 
             kids_items.append( (title,h_url,image_url ))
 
-    category1 = Category1.objects.order_by('title')
-    category2 = Category2.objects.order_by('title')
     context = RequestContext(request,
                              {'category1' : category1,
                               'category2' : category2,
                               'kids_items' : kids_items,
                               'search_field' : search_field,
+                              'page' : page,
                               })
     return render_to_response('schedule.html', context)
 
