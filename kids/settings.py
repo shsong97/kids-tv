@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 import dj_database_url
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+#BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
 # Quick-start development settings - unsuitable for production
@@ -20,6 +21,7 @@ TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'n+g79y=q+bg*)mm_e=_pyl)t0i5x1=iuo8q2g02*mhbke*35jy'
+SECRET_KEY = os.environ.get('SECRET_KEY', DEFAULT_SECRET_KEY)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -82,13 +84,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.dirname(os.path.realpath(__file__))
+#STATIC_ROOT = os.path.dirname(os.path.realpath(__file__))
+STATIC_ROOT = 'staticfiles'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
 # Parse database configuration from $DATABASE_URL
 DATABASES['default'] =  dj_database_url.config()
+
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Allow all host headers
+ALLOWED_HOSTS = ['*']
 
 # List of finder classes that know how to find static files in
 # various locations.
