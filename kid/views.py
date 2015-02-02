@@ -22,14 +22,14 @@ def home(request, cat_name1='All', cat_name2=''):
     category1 = Category1.objects.order_by('title')
     if cat_name2 != '':
         cat2=get_object_or_404(Category2,title=cat_name2)
-        kids_items=cat2.kid_set.order_by('-update_date')[:10]
+        kids_items=cat2.kid_set.order_by('-update_date')
     else:
-        kids_items = Kid.objects.order_by('-update_date')[:10]
+        kids_items = Kid.objects.order_by('-update_date')
         
     context = RequestContext(request,
                              {'category1': category1,
                               'kids_items': kids_items,
-							  'name' : name,
+                                'name' : name,
                               })
     return render_to_response('search.html', context)
 
@@ -56,7 +56,7 @@ def schedule(request):
     kids_items = []
     if search_field != '':
         youtube_url ='https://www.youtube.com'
-        url = youtube_url + '/results?search_query=' + search_field.encode('utf-8') + page_url
+        url = youtube_url + '/results?search_query=' + search_field.encode('utf-8') + page_url.encode('utf-8')
         html_doc = urllib.urlopen(url)
         soup = BeautifulSoup(html_doc)
         links = soup.findAll('div', attrs={'class':'yt-lockup-dismissable'})
@@ -91,9 +91,9 @@ def search(request):
     if request.GET.has_key('search_field'):
         if request.GET['search_field'] is not None:
             search_field = request.GET['search_field']
-            kids_items = Kid.objects.filter(title__icontains=search_field).order_by('-update_date')[:10]
+            kids_items = Kid.objects.filter(title__icontains=search_field).order_by('-update_date')
     else:
-        kids_items = Kid.objects.order_by('-update_date')[:10]
+        kids_items = Kid.objects.order_by('-update_date')
     
     context = RequestContext(request,
                              {'category1' : category1,
