@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}View Profile{% endblock %}
+{% block head %}View Profile{% endblock %}
+{% block content %}
+<form method="post" action=".">
+    {% csrf_token  %}
+    {{ form.as_p }}
+    <input type="submit" class="btn" value="Change Profile" />
+</form>
+{% endblock %}

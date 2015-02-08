@@ -18,4 +18,17 @@
     </table>
 </div>
 {% endfor %}
+
+{% if show_paginator %}
+<div class="paginator">
+    {% if has_prev %}
+    <a href="?search_field={{ search_field }}&page={{ prev_page }}">&laquo; Prev</a>
+    {% endif %}
+    {% if has_next %}
+    <a href="?search_field={{ search_field }}&page={{ next_page }}">Next &raquo;</a>
+    {% endif %}
+    (Page {{ page }} of {{ pages }})
+</div>
+{% endif %}
+	
 {% endblock %}
