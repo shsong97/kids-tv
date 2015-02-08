@@ -51,6 +51,10 @@ def home(request, cat_name1='All', cat_name2=''):
     except:
         raise Http404
 
+    page_list = []
+    for i in range(paginator.num_pages):
+        page_list.append((i+1))
+
     context = RequestContext(request,
                              {  'category1': category1,
                                 'kids_items': kids_items,
@@ -61,6 +65,7 @@ def home(request, cat_name1='All', cat_name2=''):
                                 'has_next':kids_items.has_next(),
                                 'page':page,
                                 'pages':paginator.num_pages,
+                                'page_list' : page_list,
                                 'next_page':page+1, 
                                 'prev_page':page-1,
                               })

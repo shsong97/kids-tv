@@ -1,34 +1,41 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="white-box">
 <h4>{{ name }}</h4>
-<form action="/search" class="form">
-<div style="margin : 10px">
-  <input class="input-medium" name="search_field" value="{{ search_field }}" placeholder="Search text">
-  <button class="btn btn-mini" type="submit">Search</button>
-</div>
+<form action="/search" class="form-search">
+  <input type="text" class="input-medium" name="search_field" value="{{ search_field }}" placeholder="Search text">
+  <button class="btn" type="submit">Search</button>
 </form>
+</div>
 {% for kid in kids_items %}
 <div class="white-box">
-    <table>
-    <td>
-    	<a href="{{ kid.url }}" target="_blank"><img src="{{ kid.image_url }}" width="128px"></a>
-    </td><td>
-    	<a href="{{ kid.url }}" target="_blank">{{ kid.title }}</a>
-    </td>
-    </table>
+    <div>
+        <div style="padding: 0 0 0 140px; vertial-align: top; word-wrap: break-word;">
+        <a href="{{ kid.url }}" target="_blank"><img src="{{ kid.image_url }}" width="128px" style="margin: 0 0 0 -140px"></a>
+        	<a href="{{ kid.url }}" target="_blank">{{ kid.title }}</a>
+        </div>
+    </div>
 </div>
 {% endfor %}
 
 {% if show_paginator %}
-<div class="paginator">
+<div class="pagination pagination-centered">
+    <ul>
     {% if has_prev %}
-    <a href="?search_field={{ search_field }}&page={{ prev_page }}">&laquo; Prev</a>
+    <li><a href="?search_field={{ search_field }}&page={{ prev_page }}">&laquo;</a></li>
     {% endif %}
+    {% for page_id in page_list %}
+    <li><a href="?search_field={{ search_field }}&page={{ page_id }}">{{ page_id }}</a></li>
+    {% endfor %}
     {% if has_next %}
-    <a href="?search_field={{ search_field }}&page={{ next_page }}">Next &raquo;</a>
+    <li>
+    <a href="?search_field={{ search_field }}&page={{ next_page }}">&raquo;</a></li>
     {% endif %}
-    (Page {{ page }} of {{ pages }})
+    </ul>
 </div>
 {% endif %}
-	
+<script>
+$(document).ready(function(){
+    //$("#adminBtn").click(goAdmin);
+});	
 {% endblock %}

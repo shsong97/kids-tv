@@ -1,52 +1,40 @@
 {% extends "base.html" %}
 {% block content %}
-<form action="." class="form-inline">
-<input class="input-medium" type="text" name="search_field" value="{{ search_field }}">
+<div class="white-box">
+<form action="." class="form-search">
+<input class="input-medium" type="text" name="search_field" value="{{ search_field }}" placeholder="Search text">
 <input class="input-mini" type="text" name="page" value ="{{ page }}">
 <button class="btn" type="submit">Search</button>
 </form>
-<form action="/add/" method="POST">
+</div>
+<form class="form-search" action="/add/" method="POST">
 {% csrf_token %}
+<div class="white-box">
 <select name="category2">
 {% for cat2 in category2 %}
 <option value="{{ cat2.title }}">{{ cat2.title }}</option>
 {% endfor %}
 </select>
 <button class="btn" type="submit">Add</button>
-{% for kid_title,kid_url,kid_image in kids_items %}
-<div class="white-box">
 
-    <table>
-        <td>
+{% for kid_title,kid_url,kid_image in kids_items %}
+
+<div>
+    <div class="row-fluid">
+        <div style="width:20px; float:left;"> <input type="checkbox" name="check" id="check"></div>
+        <div style="width:130px; float:left;">
             <a href="{{ kid_url }}" target="_blank"><img src="{{ kid_image }}" width="128px"></a>
-        </td>
-        <td>
+        </div>
+        <div style="float:left;">
             <a href="{{ kid_url }}" target="_blank">{{ kid_title }}</a>
-        </td>
-        <td> <input type="checkbox" name="check" id="check"></td>
-    </table>
-</div>
+        </div>
+    </div>
+
 <input type="hidden" name="kid_title" value ="{{ kid_title }}">
 <input type="hidden" name="kid_url" value ="{{ kid_url }}">
 <input type="hidden" name="kid_image" value ="{{ kid_image }}">
+</div>
 {% endfor %}
+</div>
 </form>
-
-<script>
-/*
-    $(document).ready(function(){
-        $("#joinBtn").click(function(){
-            var name=$("#name").val();
-            var username=$("#username").val();
-            var password=$("#password").val();
-            
-            if(name != "" && username != "" && password != "")
-                doJoin();
-            else
-                alert("fill all forms");
-        });
-        $("#adminBtn").click(goAdmin);
-    });
-*/
-</script>
 {% endblock %}
