@@ -16,3 +16,6 @@ application = get_wsgi_application()
 #heroku settings
 #from dj_static import Cling
 #application = Cling(get_wsgi_application())
+
+from whitenoise.django import DjangoWhiteNoise
+application = DjangoWhiteNoise(application)

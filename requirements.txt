@@ -8,3 +8,4 @@ psycopg2==2.4.5
 pystache==0.5.4
 static==1.0.2
 virtualenv==1.11.6
+whitenoise==2.0.4
