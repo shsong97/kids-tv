@@ -19,8 +19,8 @@ class Kid(models.Model):
     title = models.CharField(max_length=200)
     url = models.URLField()
     image_url = models.CharField(max_length=400)
-    create_date = models.DateTimeField(default=timezone.now())
-    update_date =  models.DateTimeField(default=timezone.now())
+    create_date = models.DateTimeField(default=timezone.now)
+    update_date =  models.DateTimeField(default=timezone.now)
     category = models.ForeignKey(Category2)
     def __unicode__(self):
         return self.title

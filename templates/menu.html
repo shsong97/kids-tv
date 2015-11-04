@@ -3,7 +3,7 @@
 </style>
 <script src="/static/kids.js"></script>
 <script>
-    //$('.dropdown-toggle').dropdown()
+    $('.dropdown-toggle').dropdown()
 </script>
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
@@ -28,12 +28,23 @@
                     </li>
                     {% endfor %}
                 </ul>
+                <ul class="nav" role="navigation" style="text-align:right">
+                    {% if user.username %}
+                    <li class=""><a href="/logout" class="">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class=""><a href="/login" class="">Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
             </div><!--/.nav-collapse -->
         </div>
     </div>
 </div>
+{% if user.is_staff %}
 <div class="white-box">
 <a href="/admin" class="btn btn-link" id="adminBtn" name="adminBtn">Admin</a>/
 <a href="/schedule" class="btn btn-link" id="schedule" name="schedule">Schedule</a>
 </div>
+{% endif %}
 </script>

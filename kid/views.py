@@ -213,10 +213,16 @@ def login_page(request):
                 next_page = request.POST.get('next', '/')
                 print next_page
                 return HttpResponseRedirect(next_page)
-    return render_to_response('registration/login.html', context_instance=RequestContext(request))
+
+    category1 = Category1.objects.order_by('title')
+    context = RequestContext(request,
+                             {'category1' : category1
+                              })
+                              
+    return render_to_response('registration/login.html', context_instance=context)
 
 def logout_page(request):
-    logout(request)
+    #logout(request)
     return HttpResponseRedirect('/login')
 
 def register_page(request):
@@ -234,8 +240,9 @@ def register_page(request):
         form=RegistrationForm()
             
     temp_param='Register'
-    user_param={'form':form,'temp_param':temp_param}
-    return render_to_response('form_template.html',RequestContext(request,user_param))
+    category1 = Category1.objects.order_by('title')
+    user_param={'form':form,'temp_param':temp_param, 'category1' : category1}
+    return render_to_response('registration/register.html',RequestContext(request,user_param))
 
 @login_required(login_url=login_url)
 def change_password(request):
@@ -260,8 +267,9 @@ def reset_password(request):
     else:
         form=PasswordResetForm()
     temp_param='Reset Password'
-    user_param={'form':form,'temp_param':temp_param}
-    return render(request,'form_template.html',RequestContext(request,user_param))
+    category1 = Category1.objects.order_by('title')
+    user_param={'form':form,'temp_param':temp_param,'category1' : category1}
+    return render(request,'registration/reset.html',RequestContext(request,user_param))
 
 @login_required(login_url=login_url)
 def user_profile_view(request):

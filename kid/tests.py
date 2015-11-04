@@ -10,7 +10,7 @@ def create_category(self,title):
 	return Category1.objects.create(title=title)
 
 
-def create_category_sub(self, title, bit_title):
+def create_category_sub(self, title, big_title):
 	cat1=get_object_or_404(Category1,title=big_title)
 	return Category2.objects.create(title=title, parent_category=cat1)
 
