@@ -22,11 +22,10 @@ SECRET_KEY = 'n+g79y=q+bg*)mm_e=_pyl)t0i5x1=iuo8q2g02*mhbke*35jy'
 #SECRET_KEY = os.environ.get('SECRET_KEY', DEFAULT_SECRET_KEY)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+TEMPLATE_DEBUG = DEBUG
 
-TEMPLATE_DEBUG = True
-
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
 
 
 # Application definition

@@ -27,3 +27,7 @@ urlpatterns = patterns('',
     url(r'^password/reset/done/$', 'django.contrib.auth.views.password_reset_done',name='reset_done'),
 
 )
+
+
+handler404 = 'kid.views.page_not_found_view'
+handler500 = 'kid.views.page_not_found_view'

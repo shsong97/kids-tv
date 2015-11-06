@@ -16,25 +16,20 @@
 {% endfor %}
 </select>
 <button class="btn" type="submit">Add</button>
+</div>
 
 {% for kid_title,kid_url,kid_image in kids_items %}
 
-<div>
-    <div class="row-fluid">
-        <div style="width:20px; float:left;"> <input type="checkbox" name="check" id="check"></div>
-        <div style="width:130px; float:left;">
-            <a href="{{ kid_url }}" target="_blank"><img src="{{ kid_image }}" width="128px"></a>
-        </div>
-        <div style="float:left;">
-            <a href="{{ kid_url }}" target="_blank">{{ kid_title }}</a>
-        </div>
-    </div>
+<div class="white-box">
+    <input type="checkbox" name="check" id="check">
+    <a href="{{ kid_url }}" target="_blank"><img src="{{ kid_image }}" width="128px"></a>
+    <a href="{{ kid_url }}" target="_blank">{{ kid_title }}</a>
+    <input type="hidden" name="kid_title" value ="{{ kid_title }}">
+    <input type="hidden" name="kid_url" value ="{{ kid_url }}">
+    <input type="hidden" name="kid_image" value ="{{ kid_image }}">
+</div>
 
-<input type="hidden" name="kid_title" value ="{{ kid_title }}">
-<input type="hidden" name="kid_url" value ="{{ kid_url }}">
-<input type="hidden" name="kid_image" value ="{{ kid_image }}">
-</div>
 {% endfor %}
-</div>
+
 </form>
 {% endblock %}

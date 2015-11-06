@@ -12,6 +12,8 @@
     <div>
         <div style="padding: 0 0 0 140px; vertial-align: top; word-wrap: break-word;">
         <a href="{{ kid.url }}" target="_blank"><img src="{{ kid.image_url }}" width="128px" style="margin: 0 0 0 -140px"></a>
+        </div>
+        <div>
         	<a href="{{ kid.url }}" target="_blank">{{ kid.title }}</a>
         </div>
     </div>
@@ -19,20 +21,31 @@
 {% endfor %}
 
 {% if show_paginator %}
-<div class="pagination pagination-centered">
-    <ul>
+<nav style="text-align:center">
+    <ul class="pagination">
+    {% if has_prev10 %}
+    <li><a href="?search_field={{ search_field }}&page={{ prev_page10 }}">&laquo;</a></li>
+    {% endif %}
     {% if has_prev %}
     <li><a href="?search_field={{ search_field }}&page={{ prev_page }}">&laquo;</a></li>
     {% endif %}
     {% for page_id in page_list %}
-    <li><a href="?search_field={{ search_field }}&page={{ page_id }}">{{ page_id }}</a></li>
+        {% if page == page_id %}
+        <li class="active"><a><b>{{ page_id }}</b></a></li>
+        {% else %}
+        <li><a href="?search_field={{ search_field }}&page={{ page_id }}">{{ page_id }}</a></li>
+        {% endif %}
     {% endfor %}
     {% if has_next %}
     <li>
     <a href="?search_field={{ search_field }}&page={{ next_page }}">&raquo;</a></li>
     {% endif %}
+    {% if has_next10 %}
+    <li>
+    <a href="?search_field={{ search_field }}&page={{ next_page10 }}">&raquo;</a></li>
+    {% endif %}    
     </ul>
-</div>
+</nav>
 {% endif %}
 <script>
 $(document).ready(function(){

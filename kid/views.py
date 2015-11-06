@@ -29,6 +29,7 @@ from kid.forms import *
 
 login_url='/login'
 ITEMS_PER_PAGE=10
+PAGE_COUNT = 10
 
 def home(request, cat_name1='All', cat_name2=''):
     name=cat_name1+'/'+cat_name2
@@ -52,8 +53,30 @@ def home(request, cat_name1='All', cat_name2=''):
         raise Http404
 
     page_list = []
-    for i in range(paginator.num_pages):
-        page_list.append((i+1))
+    
+    has_prev10=False
+    has_next10=False
+    prev_page10=0
+    next_page10=0
+
+    total_page = paginator.num_pages
+    if total_page > PAGE_COUNT and page + PAGE_COUNT < total_page:
+        has_next10 = True
+        next_page10 = (( page + PAGE_COUNT ) / PAGE_COUNT) * PAGE_COUNT
+    
+    if page > PAGE_COUNT:
+        has_prev10 = True
+        prev_page10 = (( page - PAGE_COUNT ) / PAGE_COUNT) * PAGE_COUNT
+
+    from_page = ( page / PAGE_COUNT ) * PAGE_COUNT + 1
+    
+    if from_page + PAGE_COUNT < total_page:
+        page_size = PAGE_COUNT
+    else:
+        page_size = total_page
+    
+    for i in range(page_size):
+        page_list.append((i+from_page))
 
     context = RequestContext(request,
                              {  'category1': category1,
@@ -68,6 +91,10 @@ def home(request, cat_name1='All', cat_name2=''):
                                 'page_list' : page_list,
                                 'next_page':page+1, 
                                 'prev_page':page-1,
+                                'has_prev10':has_prev10,
+                                'has_next10':has_next10,
+                                'prev_page10':prev_page10,
+                                'next_page10':next_page10,                                
                               })
     return render_to_response('search.html', context)
 
@@ -144,6 +171,30 @@ def search(request):
     except:
         raise Http404
 
+    has_prev10=False
+    has_next10=False
+    prev_page10=0
+    next_page10=0
+
+    total_page = paginator.num_pages
+    if total_page > PAGE_COUNT and page + PAGE_COUNT < total_page:
+        has_next10 = True
+        next_page10 = (( page + PAGE_COUNT ) / PAGE_COUNT) * PAGE_COUNT
+    
+    if page > PAGE_COUNT:
+        has_prev10 = True
+        prev_page10 = (( page - PAGE_COUNT ) / PAGE_COUNT) * PAGE_COUNT
+
+    from_page = ( page / PAGE_COUNT ) * PAGE_COUNT + 1
+    
+    if from_page + PAGE_COUNT < total_page:
+        page_size = PAGE_COUNT
+    else:
+        page_size = total_page
+    
+    for i in range(page_size):
+        page_list.append((i+from_page))
+        
     context = RequestContext(request,
                              {'category1' : category1,
                               'kids_items' : kids_items,
@@ -154,7 +205,11 @@ def search(request):
                               'page':page,
                               'pages':paginator.num_pages,
                               'next_page':page+1, 
-                              'prev_page':page-1,                
+                              'prev_page':page-1,
+                              'has_prev10':has_prev10,
+                              'has_next10':has_next10,
+                              'prev_page10':prev_page10,
+                              'next_page10':next_page10,
                               })
     return render_to_response('search.html', context)
 
@@ -167,7 +222,11 @@ def add(request):
     cat2 = request.POST['category2']
     category2 = get_object_or_404(Category2,title=cat2)
     
-    count = 1
+    count = 0
+    print checks
+    print kid_titles
+    print kid_urls
+    
     for check in checks:
         if check:
             kid_title = kid_titles[count]
@@ -284,3 +343,7 @@ def user_profile_view(request):
 
     user_param={'form':form,'temp_param':temp_param}
     return render(request,'form_template.html',RequestContext(request,user_param))
+
+
+def page_not_found_view(request):
+    return render(request,'page_not_found.html',RequestContext(request))
