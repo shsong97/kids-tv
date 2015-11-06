@@ -73,7 +73,7 @@ def home(request, cat_name1='All', cat_name2=''):
     if from_page + PAGE_COUNT < total_page:
         page_size = PAGE_COUNT
     else:
-        page_size = total_page
+        page_size = total_page - from_page
     
     for i in range(page_size):
         page_list.append((i+from_page))
@@ -190,7 +190,7 @@ def search(request):
     if from_page + PAGE_COUNT < total_page:
         page_size = PAGE_COUNT
     else:
-        page_size = total_page
+        page_size = total_page - from_page
     
     for i in range(page_size):
         page_list.append((i+from_page))
