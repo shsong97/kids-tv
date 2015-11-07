@@ -14,7 +14,9 @@ class Category2(models.Model):
     def __unicode__(self):
         return self.title
 
-
+    class Meta:
+        ordering = ['title']
+        
 class Kid(models.Model):
     title = models.CharField(max_length=200)
     url = models.URLField()
@@ -24,3 +26,7 @@ class Kid(models.Model):
     category = models.ForeignKey(Category2)
     def __unicode__(self):
         return self.title
+    
+    def get_absolute_url(self):
+        return self.url;
+        

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from kid import views
+from kid import views, feed
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^watch/([\%\w|\s]+)/([\%\w|\s]+)$', 'kid.views.home'),
     url(r'^delete/(\d+)$', 'kid.views.delete'),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^feed/$', feed.KidFeed()),
     # user 
     url(r'^contact/$', views.contact),
     url(r'^login/$', views.login_page), # 'django.contrib.auth.views.login'

@@ -61,11 +61,11 @@ def home(request, cat_name1='All', cat_name2=''):
     total_page = paginator.num_pages
     if total_page > PAGE_COUNT and page + PAGE_COUNT < total_page:
         has_next10 = True
-        next_page10 = (( page + PAGE_COUNT ) / PAGE_COUNT) * PAGE_COUNT
+        next_page10 = (( page + PAGE_COUNT ) / PAGE_COUNT) * PAGE_COUNT + 1
     
     if page > PAGE_COUNT:
         has_prev10 = True
-        prev_page10 = (( page - PAGE_COUNT ) / PAGE_COUNT) * PAGE_COUNT
+        prev_page10 = (( page - PAGE_COUNT ) / PAGE_COUNT) * PAGE_COUNT + 1
 
     from_page = ( page / PAGE_COUNT ) * PAGE_COUNT + 1
     
@@ -179,11 +179,11 @@ def search(request):
     total_page = paginator.num_pages
     if total_page > PAGE_COUNT and page + PAGE_COUNT < total_page:
         has_next10 = True
-        next_page10 = (( page + PAGE_COUNT ) / PAGE_COUNT) * PAGE_COUNT
+        next_page10 = (( page + PAGE_COUNT ) / PAGE_COUNT) * PAGE_COUNT + 1
     
     if page > PAGE_COUNT:
         has_prev10 = True
-        prev_page10 = (( page - PAGE_COUNT ) / PAGE_COUNT) * PAGE_COUNT
+        prev_page10 = (( page - PAGE_COUNT ) / PAGE_COUNT) * PAGE_COUNT + 1
 
     from_page = ( page / PAGE_COUNT ) * PAGE_COUNT + 1
     
@@ -353,3 +353,4 @@ def user_profile_view(request):
 
 def page_not_found_view(request):
     return render(request,'page_not_found.html',RequestContext(request))
+
