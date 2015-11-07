@@ -53,7 +53,6 @@ def home(request, cat_name1='All', cat_name2=''):
         raise Http404
 
     page_list = []
-    
     has_prev10=False
     has_next10=False
     prev_page10=0
@@ -73,7 +72,7 @@ def home(request, cat_name1='All', cat_name2=''):
     if from_page + PAGE_COUNT < total_page:
         page_size = PAGE_COUNT
     else:
-        page_size = total_page - from_page
+        page_size = total_page - from_page + 1
     
     for i in range(page_size):
         page_list.append((i+from_page))
@@ -171,6 +170,7 @@ def search(request):
     except:
         raise Http404
 
+    page_list = []
     has_prev10=False
     has_next10=False
     prev_page10=0
@@ -190,11 +190,11 @@ def search(request):
     if from_page + PAGE_COUNT < total_page:
         page_size = PAGE_COUNT
     else:
-        page_size = total_page - from_page
+        page_size = total_page - from_page + 1
     
     for i in range(page_size):
         page_list.append((i+from_page))
-        
+    
     context = RequestContext(request,
                              {'category1' : category1,
                               'kids_items' : kids_items,
@@ -204,6 +204,7 @@ def search(request):
                               'has_next':kids_items.has_next(),
                               'page':page,
                               'pages':paginator.num_pages,
+                              'page_list' : page_list,
                               'next_page':page+1, 
                               'prev_page':page-1,
                               'has_prev10':has_prev10,
@@ -238,6 +239,12 @@ def add(request):
         count = count + 1
     return HttpResponseRedirect('/schedule')
 
+def delete(request, kid_id):
+    kid_item = get_object_or_404(Kid,id=kid_id)
+    if request.user.is_staff:
+        kid_item.delete()
+
+    return HttpResponseRedirect('/')
 
 # user
 
@@ -281,7 +288,6 @@ def login_page(request):
     return render_to_response('registration/login.html', context_instance=context)
 
 def logout_page(request):
-    #logout(request)
     return HttpResponseRedirect('/login')
 
 def register_page(request):

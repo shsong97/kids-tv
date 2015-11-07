@@ -9,12 +9,17 @@
 </div>
 {% for kid in kids_items %}
 <div class="white-box">
-    <div>
-        <div style="padding: 0 0 0 140px; vertial-align: top; word-wrap: break-word;">
-        <a href="{{ kid.url }}" target="_blank"><img src="{{ kid.image_url }}" width="128px" style="margin: 0 0 0 -140px"></a>
-        </div>
-        <div>
-        	<a href="{{ kid.url }}" target="_blank">{{ kid.title }}</a>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2">
+            <a href="{{ kid.url }}" target="_blank"><img src="{{ kid.image_url }}" width="128px"></a>
+            </div>
+            <div class="col-md-10">
+            	<a href="{{ kid.url }}" target="_blank">{{ kid.title }}</a>
+                {% if user.is_staff %}
+                <a href="/delete/{{ kid.id }}" class="btn btn-danger">Delete</a>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
@@ -27,7 +32,7 @@
     <li><a href="?search_field={{ search_field }}&page={{ prev_page10 }}">&laquo;</a></li>
     {% endif %}
     {% if has_prev %}
-    <li><a href="?search_field={{ search_field }}&page={{ prev_page }}">&laquo;</a></li>
+    <li><a href="?search_field={{ search_field }}&page={{ prev_page }}">&lt;</a></li>
     {% endif %}
     {% for page_id in page_list %}
         {% if page == page_id %}
@@ -38,7 +43,7 @@
     {% endfor %}
     {% if has_next %}
     <li>
-    <a href="?search_field={{ search_field }}&page={{ next_page }}">&raquo;</a></li>
+    <a href="?search_field={{ search_field }}&page={{ next_page }}">&gt;</a></li>
     {% endif %}
     {% if has_next10 %}
     <li>

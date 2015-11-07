@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^add/$', 'kid.views.add'),
     url(r'^watch/([\%\w|\s]+)$', 'kid.views.home'),
     url(r'^watch/([\%\w|\s]+)/([\%\w|\s]+)$', 'kid.views.home'),
+    url(r'^delete/(\d+)$', 'kid.views.delete'),
     url(r'^admin/', include(admin.site.urls)),
     # user 
     url(r'^contact/$', views.contact),
