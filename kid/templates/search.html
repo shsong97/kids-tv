@@ -9,19 +9,15 @@
 </div>
 {% for kid in kids_items %}
 <div class="white-box">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-2">
-            <a href="{{ kid.url }}" target="_blank"><img src="{{ kid.image_url }}" width="128px"></a>
-            </div>
-            <div class="col-md-10">
-            	<a href="{{ kid.url }}" target="_blank">{{ kid.title }}</a>
+    <table>
+        <tr>
+            <td><a href="{{ kid.url }}" target="_blank"><img src="{{ kid.image_url }}" width="128px"></a></td>
+            <td><a href="{{ kid.url }}" target="_blank">{{ kid.title }}</a>
                 {% if user.is_staff %}
                 <a href="/delete/{{ kid.id }}" class="btn btn-danger">Delete</a>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+                {% endif %}</td>
+        </tr>
+    </table>
 </div>
 {% endfor %}
 

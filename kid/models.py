@@ -28,5 +28,5 @@ class Kid(models.Model):
         return self.title
     
     def get_absolute_url(self):
-        return self.url;
+        return self.url
         

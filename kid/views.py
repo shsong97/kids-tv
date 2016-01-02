@@ -1,28 +1,20 @@
 # -*- coding:utf-8 -*-
 
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-
-from django.utils.http import is_safe_url
 from django.utils.translation import gettext as _
 
-from django.template import Context, RequestContext
-from django.template.loader import get_template
+from django.template import RequestContext
 
 from django.contrib.auth import logout, login 
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import * 
-from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.views import password_reset, password_reset_confirm
+from django.contrib.auth.decorators import login_required
 
 from django.shortcuts import render,render_to_response, redirect,get_object_or_404
 
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
-from django.core.urlresolvers import reverse
-
 from django.db.models import Q
 
-from datetime import datetime, timedelta
 from kid.models import *
 from kid.forms import *
 
@@ -244,16 +236,17 @@ def delete(request, kid_id):
     if request.user.is_staff:
         kid_item.delete()
 
-    return HttpResponseRedirect('/')
-
-# user
+    if request.META['HTTP_REFERER']:
+        url = request.META['HTTP_REFERER']
+    else:
+        url='/'
+        
+    return HttpResponseRedirect(url)
 
 
 def contact(request):
     category1 = Category1.objects.order_by('title')
-    context = RequestContext(request,
-                             {'category1' : category1
-                              })
+    context = RequestContext(request,{'category1' : category1})
     return render_to_response('contact.html', context)    
 
 
@@ -265,7 +258,6 @@ def login_page(request):
     username = password = ''
 
     if request.GET:
-        print request.GET.get('next','/')
         next_page=request.GET.get('next','/')
         
     if request.POST:
@@ -277,7 +269,6 @@ def login_page(request):
             if user.is_active:
                 login(request, user)
                 next_page = request.POST.get('next', '/')
-                print next_page
                 return HttpResponseRedirect(next_page)
 
     category1 = Category1.objects.order_by('title')
@@ -307,7 +298,7 @@ def register_page(request):
     temp_param='Register'
     category1 = Category1.objects.order_by('title')
     user_param={'form':form,'temp_param':temp_param, 'category1' : category1}
-    return render_to_response('registration/register.html',RequestContext(request,user_param))
+    return render_to_response('registration/reg_form_template.html',RequestContext(request,user_param))
 
 @login_required(login_url=login_url)
 def change_password(request):
@@ -320,7 +311,7 @@ def change_password(request):
         form = PasswordChangeForm(None) 
     temp_param='Change Password'
     user_param={'form':form,'temp_param':temp_param}
-    return render_to_response('form_template.html',RequestContext(request,user_param))
+    return render_to_response('registration/reg_form_template.html',RequestContext(request,user_param))
 
 def reset_password(request):
     if request.POST:
@@ -334,7 +325,7 @@ def reset_password(request):
     temp_param='Reset Password'
     category1 = Category1.objects.order_by('title')
     user_param={'form':form,'temp_param':temp_param,'category1' : category1}
-    return render(request,'registration/reset.html',RequestContext(request,user_param))
+    return render(request,'registration/reg_form_template.html',RequestContext(request,user_param))
 
 @login_required(login_url=login_url)
 def user_profile_view(request):
@@ -348,7 +339,7 @@ def user_profile_view(request):
             form.save()
 
     user_param={'form':form,'temp_param':temp_param}
-    return render(request,'form_template.html',RequestContext(request,user_param))
+    return render(request,'registration/reg_form_template.html',RequestContext(request,user_param))
 
 
 def page_not_found_view(request):

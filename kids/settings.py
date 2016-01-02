@@ -22,7 +22,7 @@ SECRET_KEY = 'n+g79y=q+bg*)mm_e=_pyl)t0i5x1=iuo8q2g02*mhbke*35jy'
 #SECRET_KEY = os.environ.get('SECRET_KEY', DEFAULT_SECRET_KEY)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 # ALLOWED_HOSTS = []
@@ -64,6 +64,13 @@ DATABASES = {
     }
 }
 
+# Parse database configuration from $DATABASE_URL
+try:
+    import dj_database_url
+    DATABASES['default'] =  dj_database_url.config()
+except:
+    pass
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
@@ -81,7 +88,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = 'staticfiles' # os.path.dirname(os.path.realpath(__file__))
+STATIC_ROOT = 'staticfiles'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
@@ -112,6 +119,6 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 # EMAIL_HOST='smtp.gmail.com'
 # EMAIL_PORT=587
 # EMAIL_HOST_USER='shsong97@gmail.com'
-# EMAIL_HOST_PASSWORD='xxxx'
+# EMAIL_HOST_PASSWORD='xxxxx'
 # EMAIL_USE_TLS = True
 # DEFAULT_FROM_EMAIL = 'shsong97@gmail.com'

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Register{% endblock %}
+{% block title %}{{ temp_param }}{% endblock %}
 {% block external %}
 <style>
 
@@ -46,17 +46,14 @@
     <div class="right-box">
         <div class="white-box">
             <div class="page-header">
-                <h4>Register</h4>
+                <h4>{{ temp_param }}</h4>
             </div>
-            {% if form.has_errors %}
-            <p> Your username and password didn't match. Please try again.</p>
-            {% endif %}
             <div class="page-body">
                 <form method="post" action=".">
                     {{ form.name_of_field.errors }} 
                     {% csrf_token  %}
                     {{ form.as_p }}
-                    <input type="submit" class="btn btn-success" value="{{ temp_param }}" />
+                    <input type="submit" class="btn" value="{{ temp_param }}" />
                 </form>
             </div>
         </div>
