@@ -18,10 +18,10 @@
 <button class="btn" type="submit">Add</button>
 </div>
 
-{% for kid_title,kid_url,kid_image in kids_items %}
+{% for item_id, kid_title, kid_url, kid_image in kids_items %}
 
 <div class="white-box">
-    <input type="checkbox" name="check" id="check">
+    <input type="checkbox" name="check" id="check" value="{{ item_id }}">
     <a href="{{ kid_url }}" target="_blank"><img src="{{ kid_image }}" width="128px"></a>
     <a href="{{ kid_url }}" target="_blank">{{ kid_title }}</a>
     <input type="hidden" name="kid_title" value ="{{ kid_title }}">

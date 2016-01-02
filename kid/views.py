@@ -117,6 +117,7 @@ def schedule(request):
         soup = BeautifulSoup(html_doc)
         links = soup.findAll('div', attrs={'class':'yt-lockup-dismissable'})
         
+        item_id = 0
         for link in links:
             title = link.find('h3').find('a')['title']
             h_url = youtube_url + link.find('h3').find('a')['href']
@@ -130,7 +131,8 @@ def schedule(request):
             except:
                 image_url=i_url['src']
                 
-            kids_items.append( (title,h_url,image_url ))
+            kids_items.append(( item_id, title, h_url, image_url ))
+            item_id += 1
 
     context = RequestContext(request,
                              {'category1' : category1,
@@ -208,28 +210,32 @@ def search(request):
 
 
 def add(request):
+    '''
+    search youtube and add youtube url
+    '''
     kid_titles = request.POST.getlist('kid_title')
     kid_urls = request.POST.getlist('kid_url')
     kid_images = request.POST.getlist('kid_image')
     checks = request.POST.getlist('check')
+    checks = request.POST.getlist('check')
     cat2 = request.POST['category2']
     category2 = get_object_or_404(Category2,title=cat2)
     
-    count = 0
-    print checks
-    print kid_titles
-    print kid_urls
-    
     for check in checks:
         if check:
-            kid_title = kid_titles[count]
-            kid_url = kid_urls[count]
-            kid_image = kid_images[count]
-            #print kid_title
+            id = int(check)
+            kid_title = kid_titles[id]
+            kid_url = kid_urls[id]
+            kid_image = kid_images[id]
             kid_item = Kid(title = kid_title, url = kid_url, image_url = kid_image, category = category2)
             kid_item.save()
-        count = count + 1
-    return HttpResponseRedirect('/schedule')
+
+    if request.META['HTTP_REFERER']:
+        url = request.META['HTTP_REFERER']
+    else:
+        url='/schedule'
+
+    return HttpResponseRedirect(url)
 
 def delete(request, kid_id):
     kid_item = get_object_or_404(Kid,id=kid_id)

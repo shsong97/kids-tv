@@ -28,7 +28,6 @@ class UserTestCase(TestCase):
 		response = self.client.get('/login')
 		self.assertEqual(response.status_code, 200)
 
-
 	def logout_test(self):
 		response = self.client.get('/logout')
 		print response
@@ -41,3 +40,16 @@ class KidTestCase(TestCase):
 		create_category_sub("cat2", "cat1")
 		create_kid("title","cat2")
 		self.assertEqual(response.status_code, 200)
+		
+    # url(r'^$', 'kid.views.home'),
+    # url(r'^schedule/$', 'kid.views.schedule'),
+    # url(r'^search/$', 'kid.views.search'),
+    # url(r'^add/$', 'kid.views.add'),
+    # url(r'^watch/([\%\w|\s]+)$', 'kid.views.home'),
+    # url(r'^watch/([\%\w|\s]+)/([\%\w|\s]+)$', 'kid.views.home'),
+    # url(r'^delete/(\d+)$', 'kid.views.delete'),
+    # url(r'^feed/$', feed.KidFeed()),
+    # url(r'^profile/$',views.user_profile_view),
+    # url(r'^register/$',views.register_page),       
+    # url(r'^register/success/$',views.register_success),
+    # url(r'^changepassword/$',views.change_password),
