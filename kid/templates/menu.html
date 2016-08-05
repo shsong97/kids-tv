@@ -46,9 +46,12 @@
         </ul>
     </div>
 </nav>    
-{% if user.is_staff %}
+{% if perms.kid.add_kid %}
 <div class="white-box">
+{% if user.is_staff %}
 <a href="/admin" class="btn btn-success" id="adminBtn" name="adminBtn">Admin</a>
+{% endif %}
 <a href="/schedule" class="btn btn-success" id="schedule" name="schedule">Schedule</a>
 </div>
 {% endif %}
+

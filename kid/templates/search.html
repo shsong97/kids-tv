@@ -11,10 +11,10 @@
 <div class="white-box">
     <table>
         <tr>
-            <td><a href="{{ kid.url }}" target="_blank"><img src="{{ kid.image_url }}" width="128px"></a></td>
-            <td><a href="{{ kid.url }}" target="_blank">{{ kid.title }}</a>
+            <td><a href="{% url 'detail' kid.id %}" target="_blank"><img src="{{ kid.image_url }}" width="128px"></a>
+            <td><a href="{% url 'detail' kid.id %}" target="_blank">{{ kid.title }}</a>
                 {% if user.is_staff %}
-                <a href="/delete/{{ kid.id }}" class="btn btn-danger">Delete</a>
+                <a href="{% url 'delete' kid.id %}" class="btn btn-danger">Delete</a>
                 {% endif %}</td>
         </tr>
     </table>

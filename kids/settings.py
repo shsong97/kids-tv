@@ -65,11 +65,11 @@ DATABASES = {
 }
 
 # Parse database configuration from $DATABASE_URL
-try:
-    import dj_database_url
-    DATABASES['default'] =  dj_database_url.config()
-except:
-    pass
+# try:
+#     import dj_database_url
+#     DATABASES['default'] =  dj_database_url.config()
+# except:
+#     pass
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/

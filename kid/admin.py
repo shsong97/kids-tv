@@ -15,7 +15,7 @@ class AdminCategory2(admin.ModelAdmin):
 
 class AdminKid(admin.ModelAdmin):
     search_fields = ("title",)
-    list_display = ("title", "category", "url", "update_date", )
+    list_display = ("title", "category", "url", "update_date", "youtube_id" )
     list_filter = ("category", "update_date", )
     ordering = ("update_date",)
 

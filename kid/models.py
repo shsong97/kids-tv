@@ -24,6 +24,8 @@ class Kid(models.Model):
     create_date = models.DateTimeField(default=timezone.now)
     update_date =  models.DateTimeField(default=timezone.now)
     category = models.ForeignKey(Category2)
+    youtube_id = models.CharField(max_length=100, default='')
+    
     def __unicode__(self):
         return self.title
     

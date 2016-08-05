@@ -18,6 +18,7 @@ from django.db.models import Q
 from kid.models import *
 from kid.forms import *
 
+from django.contrib.auth.decorators import permission_required
 
 login_url='/login'
 ITEMS_PER_PAGE=10
@@ -89,7 +90,7 @@ def home(request, cat_name1='All', cat_name2=''):
                               })
     return render_to_response('search.html', context)
 
-
+@permission_required('kid.add_kid')
 def schedule(request):
     search_field = ''
     if request.GET.has_key('search_field'):
@@ -227,7 +228,8 @@ def add(request):
             kid_title = kid_titles[id]
             kid_url = kid_urls[id]
             kid_image = kid_images[id]
-            kid_item = Kid(title = kid_title, url = kid_url, image_url = kid_image, category = category2)
+            youtube_id = kid_urls[id].split('?')[1][2:]
+            kid_item = Kid(title = kid_title, url = kid_url, image_url = kid_image, category = category2, youtube_id = youtube_id)
             kid_item.save()
 
     if request.META['HTTP_REFERER']:
@@ -249,11 +251,15 @@ def delete(request, kid_id):
         
     return HttpResponseRedirect(url)
 
+def detail(request, kid_id):
+    kid_item = get_object_or_404(Kid,id=kid_id)
+    category1 = Category1.objects.order_by('title')
+    return render(request,'detail.html', {'category1' : category1, 'kid':kid_item})
 
 def contact(request):
     category1 = Category1.objects.order_by('title')
     context = RequestContext(request,{'category1' : category1})
-    return render_to_response('contact.html', context)    
+    return render_to_response('contact.html', context)
 
 
 def register_success(request):
