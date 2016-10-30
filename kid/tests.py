@@ -35,12 +35,16 @@ class UserTestCase(TestCase):
 
 
 class KidTestCase(TestCase):
-	def create_kid_test(self, title):
+  def init(self):
 		create_category("cat1")
 		create_category_sub("cat2", "cat1")
+    
+	def create_kid_test(self, title):
 		create_kid("title","cat2")
 		self.assertEqual(response.status_code, 200)
-		
+
+  def delete_kid_test(self, id):
+    self.assertEqual(response.status_code, 200)
     # url(r'^$', 'kid.views.home'),
     # url(r'^schedule/$', 'kid.views.schedule'),
     # url(r'^search/$', 'kid.views.search'),
