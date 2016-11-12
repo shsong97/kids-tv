@@ -36,6 +36,20 @@
         </ul>
         <ul class="nav navbar-nav" style="float:right">
             {% if user.username %}
+            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
+                <ul class="dropdown-menu">
+                <li role="presentation"><a href="/profile">Profile</a></li>
+                <li role="presentation"><a href="/changepassword">Change Password</a></li>
+                <li role="presentation"><a href="/resetpassword">Reset Password</a></li>
+                {% if user.is_staff %}
+                <li role="presentation"><a href="/admin">Admin</a></li>
+                {% endif %}
+                {% if perms.kid.add_kid %}
+                <li role="presentation"><a href="/schedule">Register Item</a></li>
+                {% endif %}
+                </ul>
+            </li>
+            
             <li><button type="button" class="btn btn-danger navbar-btn" onClick="javascript:goto('/logout')">Logout</button>
             </li>
             {% else %}
@@ -46,12 +60,5 @@
         </ul>
     </div>
 </nav>    
-{% if perms.kid.add_kid %}
-<div class="white-box">
-{% if user.is_staff %}
-<a href="/admin" class="btn btn-success" id="adminBtn" name="adminBtn">Admin</a>
-{% endif %}
-<a href="/schedule" class="btn btn-success" id="schedule" name="schedule">Schedule</a>
-</div>
-{% endif %}
+ 
 

@@ -5,23 +5,24 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import gettext_lazy as _
 from django.forms import ModelForm
+from .models import KidUser
 
 class ViewUserProfile(ModelForm):
     class Meta:
-        model=User
-        #fields = '__all__'
-        fields = ['username', 'first_name','last_name','email',]
+        model=KidUser
+        # fields = '__all__'
+        fields = ['kid_user','address',]
         
 class RegistrationForm(forms.Form):
-    username=forms.CharField(label='Username',max_length=30)
-    email=forms.EmailField(label='Email')
+    username=forms.CharField(label='Username',max_length=30,widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    email=forms.EmailField(label='Email',widget=forms.TextInput(attrs={'class' : 'form-control'}))
     password1=forms.CharField(
         label='Password',
-        widget=forms.PasswordInput()    
+        widget=forms.PasswordInput(attrs={'class' : 'form-control'})    
     )
     password2=forms.CharField(
         label='Password(confirm)',
-        widget=forms.PasswordInput()
+        widget=forms.PasswordInput(attrs={'class' : 'form-control'})
     )
     # clean_<field> : valid field
     def clean_password2(self):

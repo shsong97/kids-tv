@@ -31,3 +31,28 @@ function getCookie(name) {
     }
     return unescape(value);
 }
+
+
+function button_like() {
+    var item=$(document);
+    var kids_id=item.find("#span_like").attr('value');
+    $.ajax({
+        url:"/detail/"+kids_id+"/like",
+        dataType:'json',
+        success:function(result){
+            console.log(result)
+            item.find("#span_like").text(result['like_count']);
+            if(result['my_click'])
+                item.find("#button_like").attr('class',"btn btn-info");
+            else
+                item.find("#button_like").attr('class',"btn btn-warning");
+        },
+        error:function(e) {
+            alert(e.responseText);
+        }
+    });
+}
+ 
+$(document).ready(function() {
+    $(document).on("click","#button_like",button_like);
+})

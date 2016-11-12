@@ -59,17 +59,17 @@ DATABASES = {
 #         'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'nitrous',
-        'USER': 'nitrous',
-        'PASSWORD': 'nitrous',
-        'HOST': '0.0.0.0',
+        'NAME': 'kidstv',
+        'USER': 'kidstv',
+        'PASSWORD': 'kidstv',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
 
 # Parse database configuration from $DATABASE_URL
-import dj_database_url
-DATABASES['default'] =  dj_database_url.config()
+# import dj_database_url
+# DATABASES['default'] =  dj_database_url.config()
 
 
 # Internationalization
@@ -95,8 +95,8 @@ STATICFILES_DIRS = (
 )
 
 # Parse database configuration from $DATABASE_URL
-# import dj_database_url
-# DATABASES['default'] =  dj_database_url.config()
+import dj_database_url
+DATABASES['default'] =  dj_database_url.config()
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -146,9 +146,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 # gmail setting
-# EMAIL_HOST='smtp.gmail.com'
-# EMAIL_PORT=587
-# EMAIL_HOST_USER='shsong97@gmail.com'
-# EMAIL_HOST_PASSWORD='xxxxx'
-# EMAIL_USE_TLS = True
-# DEFAULT_FROM_EMAIL = 'shsong97@gmail.com'
+SITE_ID = 1
+
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT=587
+EMAIL_HOST_USER='shsong97@gmail.com'
+EMAIL_HOST_PASSWORD='tmdgns1997'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'shsong97@gmail.com'
+

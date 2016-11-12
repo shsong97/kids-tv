@@ -1,17 +1,28 @@
+# -*- coding:utf-8 -*-
 from django.db import models
 import datetime
 from django.utils import timezone
+from django.contrib.auth.models import User
+
 
 # Create your models here.
 class Category1(models.Model):
     title = models.CharField(max_length=200)
+
     def __unicode__(self):
+        return self.title
+        
+    def __str__(self):
         return self.title
 
 class Category2(models.Model):
     title = models.CharField(max_length=200)
     parent_category = models.ForeignKey(Category1)
+
     def __unicode__(self):
+        return self.title
+
+    def __str__(self):
         return self.title
 
     class Meta:
@@ -29,6 +40,29 @@ class Kid(models.Model):
     def __unicode__(self):
         return self.title
     
+    def __str__(self):
+        return self.title
+
     def get_absolute_url(self):
         return self.url
-        
+
+class KidUser(models.Model):
+    kid_user = models.ForeignKey(User)
+    address = models.CharField(max_length=200)
+    invalid_password_count = models.IntegerField()
+    last_login_date = models.DateTimeField()
+
+    class Meta:
+        verbose_name = "KidUser"
+        verbose_name_plural = "KidUsers"
+
+    def __str__(self):
+        return self.kid_user.username
+
+
+class Favorite(models.Model):
+    fav_user = models.ForeignKey(KidUser)
+    fav_kid = models.ForeignKey(Kid)  
+
+
+    

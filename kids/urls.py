@@ -14,6 +14,8 @@ urlpatterns = [
     url(r'^watch/([\%\w|\s]+)/([\%\w|\s]+)$', views.home),
     url(r'^delete/(\d+)$', views.delete,name='delete'),
     url(r'^detail/(\d+)$', views.detail,name='detail'),
+    url(r'^detail/(\d+)/like/$', views.detail_like,name='detail_like'),
+    url(r'^detail/(\d+)/favorite/$', views.detail_favorite,name='detail_favorite'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^feed/$', feed.KidFeed()),
     # user
@@ -24,7 +26,7 @@ urlpatterns = [
     url(r'^register/$',views.register_page),
     url(r'^register/success/$',views.register_success),
     url(r'^changepassword/$',views.change_password),
-    # url(r'^resetpassword/$', views.reset_password, name='reset'),
+    url(r'^resetpassword/$', views.reset_password, name='reset'),
     # url(r'^password/reset/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', 'django.contrib.auth.views.password_reset_confirm',{'post_reset_redirect':'login','template_name':'registration/reset_confirm.html'},name='reset_confirm'),
     # url(r'^password/done/$', 'django.contrib.auth.views.password_reset_complete',{'template_name':'registration/reset_complete.html'},name='reset_complete'),
     # url(r'^password/reset/done/$', 'django.contrib.auth.views.password_reset_done',name='reset_done'),

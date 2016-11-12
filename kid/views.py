@@ -1,8 +1,9 @@
 # -*- coding:utf-8 -*-
+from __future__ import unicode_literals
 
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.utils.translation import gettext as _
-
+from django.utils.http import urlquote
 from django.template import RequestContext
 
 from django.contrib.auth import logout, login
@@ -18,14 +19,15 @@ from django.db.models import Q
 from kid.models import *
 from kid.forms import *
 
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import permission_required, login_required
+from django.http import JsonResponse
+from datetime import datetime
 
 login_url='/login'
 ITEMS_PER_PAGE=10
 PAGE_COUNT = 10
 
 def home(request, cat_name1='All', cat_name2=''):
-    name=cat_name1+'/'+cat_name2
     search_field = ''
     category1 = Category1.objects.order_by('title')
     if cat_name2 != '':
@@ -54,13 +56,14 @@ def home(request, cat_name1='All', cat_name2=''):
     total_page = paginator.num_pages
     if total_page > PAGE_COUNT and page + PAGE_COUNT < total_page:
         has_next10 = True
-        next_page10 = (( page + PAGE_COUNT ) / PAGE_COUNT) * PAGE_COUNT + 1
+        next_page10 = (( page + PAGE_COUNT ) // PAGE_COUNT) * PAGE_COUNT + 1
 
     if page > PAGE_COUNT:
         has_prev10 = True
-        prev_page10 = (( page - PAGE_COUNT ) / PAGE_COUNT) * PAGE_COUNT + 1
+        prev_page10 = (( page - PAGE_COUNT ) // PAGE_COUNT) * PAGE_COUNT + 1
 
-    from_page = ( page / PAGE_COUNT ) * PAGE_COUNT + 1
+    from_page = ( page // PAGE_COUNT ) * PAGE_COUNT + 1
+    
 
     if from_page + PAGE_COUNT < total_page:
         page_size = PAGE_COUNT
@@ -72,7 +75,8 @@ def home(request, cat_name1='All', cat_name2=''):
 
     context = {  'category1': category1,
                'kids_items': kids_items,
-               'name' : name,
+               'cat_name1' : cat_name1,
+               'cat_name2' : cat_name2,
                'search_field' : search_field,
                'show_paginator':paginator.num_pages>1,
                'has_prev':kids_items.has_previous(),
@@ -92,12 +96,12 @@ def home(request, cat_name1='All', cat_name2=''):
 @permission_required('kid.add_kid')
 def schedule(request):
     search_field = ''
-    if request.GET.has_key('search_field'):
+    if 'search_field' in request.GET:
         if request.GET['search_field'] is not None:
             search_field=request.GET['search_field']
 
     page = '1'
-    if request.GET.has_key('page'):
+    if 'page' in request.GET:
         if request.GET['page'] is not None:
             page=request.GET['page']
 
@@ -108,13 +112,24 @@ def schedule(request):
 
     from bs4 import BeautifulSoup
     import urllib
+    import sys
+
+    if sys.version_info[0] == 3:
+        from urllib.request import urlopen
+    else:
+        # Not Python 3 - today, it is most likely to be Python 2
+        # But note that this might need an update when Python 4
+        # might be around one day
+        from urllib import urlopen
 
     kids_items = []
     if search_field != '':
         youtube_url ='https://www.youtube.com'
-        url = youtube_url + '/results?search_query=' + search_field.encode('utf-8') + page_url.encode('utf-8')
+        url = youtube_url + '/results?search_query=' + urlquote(search_field) + page_url
+        
         html_doc = urllib.urlopen(url)
-        soup = BeautifulSoup(html_doc)
+
+        soup = BeautifulSoup(html_doc, "html.parser")
         links = soup.findAll('div', attrs={'class':'yt-lockup-dismissable'})
 
         item_id = 0
@@ -145,7 +160,7 @@ def schedule(request):
 def search(request):
     category1 = Category1.objects.order_by('title')
     search_field = ''
-    if request.GET.has_key('search_field'):
+    if 'search_field' in request.GET:
         if request.GET['search_field'] is not None:
             search_field = request.GET['search_field']
             kids_items = Kid.objects.filter(title__icontains=search_field).order_by('-update_date')
@@ -168,22 +183,24 @@ def search(request):
     has_next10=False
     prev_page10=0
     next_page10=0
-
+    from_page=0
     total_page = paginator.num_pages
     if total_page > PAGE_COUNT and page + PAGE_COUNT < total_page:
         has_next10 = True
-        next_page10 = (( page + PAGE_COUNT ) / PAGE_COUNT) * PAGE_COUNT + 1
+        next_page10 = (( page + PAGE_COUNT ) // PAGE_COUNT) * PAGE_COUNT + 1
 
     if page > PAGE_COUNT:
         has_prev10 = True
-        prev_page10 = (( page - PAGE_COUNT ) / PAGE_COUNT) * PAGE_COUNT + 1
+        prev_page10 = (( page - PAGE_COUNT ) // PAGE_COUNT) * PAGE_COUNT + 1
 
-    from_page = ( page / PAGE_COUNT ) * PAGE_COUNT + 1
+    from_page = int( page // PAGE_COUNT ) * PAGE_COUNT + 1
 
     if from_page + PAGE_COUNT < total_page:
         page_size = PAGE_COUNT
     else:
         page_size = total_page - from_page + 1
+
+    page_size = int(page_size)
 
     for i in range(page_size):
         page_list.append((i+from_page))
@@ -226,7 +243,8 @@ def add(request):
             kid_url = kid_urls[id]
             kid_image = kid_images[id]
             youtube_id = kid_urls[id].split('?')[1][2:]
-            kid_item = Kid(title = kid_title, url = kid_url, image_url = kid_image, category = category2, youtube_id = youtube_id)
+            kid_item = Kid(title = kid_title, url = kid_url, image_url = kid_image, 
+                category = category2, youtube_id = youtube_id)
             kid_item.save()
 
     if request.META['HTTP_REFERER']:
@@ -236,6 +254,7 @@ def add(request):
 
     return HttpResponseRedirect(url)
 
+@login_required(login_url=login_url)
 def delete(request, kid_id):
     kid_item = get_object_or_404(Kid,id=kid_id)
     if request.user.is_staff:
@@ -253,8 +272,49 @@ def delete(request, kid_id):
 
 def detail(request, kid_id):
     kid_item = get_object_or_404(Kid,id=kid_id)
+    like_count = Favorite.objects.filter(fav_kid=kid_item).count()
+    kid_user = KidUser.objects.get(kid_user=request.user)
+    my_click = False
+    try:
+        favorite = Favorite.objects.get(fav_kid=kid_item, fav_user=kid_user)
+        my_click = True
+    except:
+        favorite = None
     category1 = Category1.objects.order_by('title')
-    return render(request,'detail.html', {'category1' : category1, 'kid':kid_item})
+
+    return render(request,'detail.html', {
+        'category1' : category1, 
+        'kid' : kid_item, 
+        'like_count': like_count,
+        'my_click' : my_click})
+
+@login_required(login_url=login_url)
+def detail_like(request, kid_id):
+    kid_user = KidUser.objects.get(kid_user=request.user)
+    fav_kid = Kid.objects.get(id=kid_id)
+    my_click = False
+    try:
+        favorite = Favorite.objects.get(fav_kid=fav_kid, fav_user=kid_user)
+        my_click = True
+    except:
+        favorite = None
+
+    if favorite:
+        favorite.delete()
+    else:
+        Favorite.objects.create(fav_kid=fav_kid, fav_user=kid_user)
+    like_count=Favorite.objects.filter(fav_kid=kid_id).count()
+    data_dict={'like_count':like_count, 'my_click' : my_click}
+    return JsonResponse(data_dict)
+
+def detail_favorite(request, kid_id):
+    try:
+        fav_kid = Kid.objects.get(id=kid_id)
+        favorites = Favorite.objects.filter(fav_kid=fav_kid)        
+    except:
+        favorites = None
+
+    return JsonResponse({'favorites':favorites})
 
 def contact(request):
     category1 = Category1.objects.order_by('title')
@@ -297,7 +357,8 @@ def register_page(request):
                 password=form.cleaned_data['password1'],
                 email=form.cleaned_data['email']
             )
-
+            kid_user = KidUser.objects.create(kid_user=user,
+                invalid_password_count=0,address='',last_login_date=datetime.today())
             return HttpResponseRedirect('/register/success/')
     else:
         form=RegistrationForm()
@@ -338,10 +399,12 @@ def reset_password(request):
 def user_profile_view(request):
     temp_param='Change Profile'
     if request.user:
-        form=ViewUserProfile(instance=request.user)
+        kid_user = KidUser.objects.get(kid_user=request.user)
+        form=ViewUserProfile(instance=kid_user)
 
     if request.POST:
-        form=ViewUserProfile(request.POST,instance=request.user)
+        kid_user = KidUser.objects.get(kid_user=request.user)
+        form=ViewUserProfile(request.POST,instance=kid_user)
         if form.is_valid():
             form.save()
 

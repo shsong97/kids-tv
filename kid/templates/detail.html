@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+
 <style>
   /* Large devices (large desktops, 1200px and up) */
   @media screen and (min-width: 1200px) {
@@ -20,14 +21,24 @@
     #iframe-youtube { width:100%; height:360px; }
   }
 </style>
-<div class="white-box">
-<h3>{{ kid.title }}</h3>
-<div style="text-align:center">
-<iframe id="iframe-youtube" src="https://www.youtube.com/embed/{{ kid.youtube_id }}" frameborder="0" allowfullscreen></iframe>
-</div>
-{% if user.is_staff %}
-<br />
-<a href="/delete/{{ kid.id }}" class="btn btn-danger">Delete</a>
-{% endif %}
+<div class="white-box form-group">
+  <h4>{{ kid.title }}</h4>
+    <div class="embed-responsive embed-responsive-16by9">
+      <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ kid.youtube_id }}" frameborder="0" allowfullscreen></iframe>
+    </div>
+  <br />
+  <div class="row">
+    <div class="left col-sm-2 col-md-2">
+    <a href="{{ kid.id }}/favorite" class="btn">반응<span id="span_like" value="{{ kid.id }}">{{like_count}}</span>개</a>
+    </div>
+    <div class="text-right col-sm-10 col-md-10">
+      <button class="btn btn-{% if my_click %}warning{% else %}info{% endif %}" id="button_like"><i class="glyphicon glyphicon-heart"></i></button>
+
+      {% if user.is_staff %}
+      <a href="/delete/{{ kid.id }}" class="btn btn-danger">Delete</a>
+      {% endif %}
+    </div>
+  </div>  
+
 </div>
 {% endblock %}

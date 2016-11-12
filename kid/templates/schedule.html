@@ -2,9 +2,11 @@
 {% block content %}
 <div class="white-box">
 <form action="." class="form-search">
-<input class="input-medium" type="text" name="search_field" value="{{ search_field }}" placeholder="Search text">
-<input class="input-mini" type="text" name="page" value ="{{ page }}">
-<button class="btn" type="submit">Search</button>
+	<div class="form-group">
+		<input class="input-medium form-control"  type="text" name="search_field" value="{{ search_field }}" placeholder="Search text">
+		<input class="input-mini form-control" type="text" name="page" value ="{{ page }}">
+		<button class="btn btn-success" type="submit">Search</button>
+	</div>
 </form>
 </div>
 <form class="form-search" action="/add/" method="POST">
@@ -15,18 +17,24 @@
 <option value="{{ cat2.title }}">{{ cat2.title }}</option>
 {% endfor %}
 </select>
-<button class="btn" type="submit">Add</button>
+<button class="btn btn-primary" type="submit">Add</button>
 </div>
 
 {% for item_id, kid_title, kid_url, kid_image in kids_items %}
 
-<div class="white-box">
-    <input type="checkbox" name="check" id="check" value="{{ item_id }}">
-    <a href="{{ kid_url }}" target="_blank"><img src="{{ kid_image }}" width="128px"></a>
-    <a href="{{ kid_url }}" target="_blank">{{ kid_title }}</a>
-    <input type="hidden" name="kid_title" value ="{{ kid_title }}">
-    <input type="hidden" name="kid_url" value ="{{ kid_url }}">
-    <input type="hidden" name="kid_image" value ="{{ kid_image }}">
+<div class="white-box row">
+	<div class="">
+		<div class="left col-md-2 col-sm-2">
+		    <input type="checkbox" name="check" id="check" value="{{ item_id }}">
+		    &nbsp;&nbsp;<a href="{{ kid_url }}" target="_blank"><img src="{{ kid_image }}" width="128px"></a>
+	    </div>
+	    <div class="col-md-11 col-sm-11">
+		    <a href="{{ kid_url }}" target="_blank">{{ kid_title }}</a>
+		    <input type="hidden" name="kid_title" value ="{{ kid_title }}">
+		    <input type="hidden" name="kid_url" value ="{{ kid_url }}">
+		    <input type="hidden" name="kid_image" value ="{{ kid_image }}">
+	    </div>
+    </div>
 </div>
 
 {% endfor %}

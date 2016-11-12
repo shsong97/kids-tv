@@ -1,5 +1,6 @@
+# -*- coding:utf-8 -*-
 from django.contrib.syndication.views import Feed
-from models import Kid
+from .models import Kid
 
 class KidFeed(Feed):
     title = 'Latest kid items'
