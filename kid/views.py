@@ -232,7 +232,6 @@ def add(request):
     kid_urls = request.POST.getlist('kid_url')
     kid_images = request.POST.getlist('kid_image')
     checks = request.POST.getlist('check')
-    checks = request.POST.getlist('check')
     cat2 = request.POST['category2']
     category2 = get_object_or_404(Category2,title=cat2)
 
@@ -273,11 +272,15 @@ def delete(request, kid_id):
 def detail(request, kid_id):
     kid_item = get_object_or_404(Kid,id=kid_id)
     like_count = Favorite.objects.filter(fav_kid=kid_item).count()
-    kid_user = KidUser.objects.get(kid_user=request.user)
     my_click = False
     try:
+        if request.user == AnonymousUser:
+            kid_user=None
+        else:
+            kid_user = KidUser.objects.get(kid_user=request.user)
         favorite = Favorite.objects.get(fav_kid=kid_item, fav_user=kid_user)
-        my_click = True
+        if favorite:
+            my_click = True
     except:
         favorite = None
     category1 = Category1.objects.order_by('title')

@@ -35,6 +35,6 @@ input:forcus {
 }
 
 .logonbox {
-    width:400px;
+    min-width:340px;
     min-height: 280px;
 }

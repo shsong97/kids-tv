@@ -18,9 +18,7 @@ input { margin-top: 5px; }
                 <form method="post" action=".">
                     {{ form.name_of_field.errors }} 
                     {% csrf_token  %}
-                    <table>
-                    {{ form.as_table }}
-                    </table>
+                    {{ form.as_p }}
                     <input type="submit" class="form-control btn btn-success" value="{{ temp_param }}" />
                 </form>
             </div>

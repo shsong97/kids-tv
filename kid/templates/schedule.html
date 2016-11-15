@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
+<style>
+input[type=checkbox] {background-color: #cccccc; size: 10px;}
+</style>
 <div class="white-box">
 <form action="." class="form-search">
 	<div class="form-group">
@@ -22,13 +25,13 @@
 
 {% for item_id, kid_title, kid_url, kid_image in kids_items %}
 
-<div class="white-box row">
-	<div class="">
-		<div class="left col-md-2 col-sm-2">
-		    <input type="checkbox" name="check" id="check" value="{{ item_id }}">
-		    &nbsp;&nbsp;<a href="{{ kid_url }}" target="_blank"><img src="{{ kid_image }}" width="128px"></a>
+<div class="white-box">
+	<div class="media">
+		<div class="media-left">
+		    <a href="{{ kid_url }}" target="_blank"><img class="media-object" src="{{ kid_image }}" width="128px"></a>
 	    </div>
-	    <div class="col-md-11 col-sm-11">
+	    <div class="media-body">
+		    <input type="checkbox" name="check" id="check" value="{{ item_id }}">
 		    <a href="{{ kid_url }}" target="_blank">{{ kid_title }}</a>
 		    <input type="hidden" name="kid_title" value ="{{ kid_title }}">
 		    <input type="hidden" name="kid_url" value ="{{ kid_url }}">
