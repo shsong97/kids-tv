@@ -38,23 +38,24 @@
             {% if user.username %}
             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
                 <ul class="dropdown-menu">
-                <li role="presentation"><a href="/profile">Profile</a></li>
-                <li role="presentation"><a href="/changepassword">Change Password</a></li>
-                <li role="presentation"><a href="/resetpassword">Reset Password</a></li>
+                <li role="presentation"><a href="/myfavorite">즐겨찾기</a></li>
+                <li role="presentation"><a href="/profile">사용자 정보</a></li>
+                <li role="presentation"><a href="/changepassword">비밀번호 변경</a></li>
+                <li role="presentation"><a href="/resetpassword">비밀번호 초기화</a></li>
                 {% if user.is_staff %}
-                <li role="presentation"><a href="/admin">Admin</a></li>
+                <li role="presentation"><a href="/admin">관리자</a></li>
                 {% endif %}
                 {% if perms.kid.add_kid %}
-                <li role="presentation"><a href="/schedule">Register Item</a></li>
+                <li role="presentation"><a href="/schedule">항목등록</a></li>
                 {% endif %}
-                </ul>
+                </ul>   
             </li>
             
-            <li><button type="button" class="btn btn-danger navbar-btn" onClick="javascript:goto('/logout')">Logout</button>
+            <li><button type="button" class="btn btn-danger navbar-btn" onClick="javascript:goto('/logout')">로그아웃</button>
             </li>
             {% else %}
-            <li><button type="button" class="btn btn-success navbar-btn" onClick="javascript:goto('/login')">Login</button>
-            <button type="button" class="btn btn-danger navbar-btn" onClick="javascript:goto('/register')">Register</button>
+            <li><button type="button" class="btn btn-success navbar-btn" onClick="javascript:goto('/login')">로그인</button>
+            <button type="button" class="btn btn-danger navbar-btn" onClick="javascript:goto('/register')">아이디등록</button>
             </li>
             {% endif %}
         </ul>

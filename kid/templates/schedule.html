@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% block title %}항목등록{% endblock %}
 {% block content %}
 <style>
 input[type=checkbox] {background-color: #cccccc; size: 10px;}
@@ -6,9 +7,9 @@ input[type=checkbox] {background-color: #cccccc; size: 10px;}
 <div class="white-box">
 <form action="." class="form-search">
 	<div class="form-group">
-		<input class="input-medium form-control"  type="text" name="search_field" value="{{ search_field }}" placeholder="Search text">
+		<input class="input-medium form-control"  type="text" name="search_field" value="{{ search_field }}" placeholder="검색어를 입력하세요">
 		<input class="input-mini form-control" type="text" name="page" value ="{{ page }}">
-		<button class="btn btn-success" type="submit">Search</button>
+		<button class="btn btn-success" type="submit">검색</button>
 	</div>
 </form>
 </div>
@@ -20,7 +21,7 @@ input[type=checkbox] {background-color: #cccccc; size: 10px;}
 <option value="{{ cat2.title }}">{{ cat2.title }}</option>
 {% endfor %}
 </select>
-<button class="btn btn-primary" type="submit">Add</button>
+<button class="btn btn-primary" type="submit">추가</button>
 </div>
 
 {% for item_id, kid_title, kid_url, kid_image in kids_items %}

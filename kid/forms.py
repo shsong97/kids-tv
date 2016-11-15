@@ -14,14 +14,14 @@ class ViewUserProfile(ModelForm):
         fields = ['kid_user','address',]
         
 class RegistrationForm(forms.Form):
-    username=forms.CharField(label='Username',max_length=30,widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    username=forms.CharField(label='아이디',max_length=30,widget=forms.TextInput(attrs={'class' : 'form-control'}))
     email=forms.EmailField(label='Email',widget=forms.TextInput(attrs={'class' : 'form-control'}))
     password1=forms.CharField(
-        label='Password',
+        label='비밀번호',
         widget=forms.PasswordInput(attrs={'class' : 'form-control'})    
     )
     password2=forms.CharField(
-        label='Password(confirm)',
+        label='비밀번호(확인)',
         widget=forms.PasswordInput(attrs={'class' : 'form-control'})
     )
     # clean_<field> : valid field

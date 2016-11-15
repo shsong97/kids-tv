@@ -3,7 +3,7 @@ from django.db import models
 import datetime
 from django.utils import timezone
 from django.contrib.auth.models import User
-
+from datetime import datetime
 
 # Create your models here.
 class Category1(models.Model):
@@ -49,9 +49,10 @@ class Kid(models.Model):
 class KidUser(models.Model):
     kid_user = models.ForeignKey(User)
     address = models.CharField(max_length=200)
-    invalid_password_count = models.IntegerField()
-    last_login_date = models.DateTimeField()
-
+    invalid_password_count = models.IntegerField(default=0)
+    last_login_date = models.DateTimeField(default=datetime.today())
+    gender = models.CharField(max_length=1,default='M')
+    birthday = models.CharField(max_length=10,default='2000-01-01')
     class Meta:
         verbose_name = "KidUser"
         verbose_name_plural = "KidUsers"

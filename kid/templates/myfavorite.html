@@ -1,32 +1,28 @@
 {% extends "base.html" %}
-{% block title %}어린이 TV{% endblock %}
+{% block title %}즐겨찾기{% endblock %}
 {% block content %}
 
 <div class="white-box">
-<ol class="breadcrumb">
-  <li><a href="/watch/{{ cat_name1 }}">{{ cat_name1 }}</a></li>
-  <li><a href="/watch/{{ cat_name1 }}/{{ cat_name2 }}">{{ cat_name2 }}</a></li>
-</ol>
-<form action="/search" class="form-search">
+
+<form action="/myfavorite" class="form-search">
     <div class="input-group">
-      <input type="text" class="input-medium form-control" name="search_field" value="{{ search_field }}" placeholder="Search text">
+      <input type="text" class="input-medium form-control" name="search_field" value="{{ search_field }}" placeholder="검색어를 입력하세요">
       <span class="input-group-btn">
-      <button class="btn btn-success" type="submit">찾기</button>
+      <button class="btn btn-success" type="submit">Search</button>
       </span>
   </div>
 </form>
 </div>
-{% for kid in kids_items %}
+{% for myfavor in myfavorites %}
 <div class="white-box">
     <div class="media">
         <div class="media-left media-middle">
-            <a href="{% url 'detail' kid.id %}" ><img src="{{ kid.image_url }}" width="128px"></a>
+            <a href="{% url 'detail' myfavor.fav_kid.id %}" ><img src="{{ myfavor.fav_kid.image_url }}" width="128px"></a>
         </div>
         <div class="media-body">
-            <a href="{% url 'detail' kid.id %}" >{{ kid.title }}</a>
-                {% if user.is_staff %}
-                <a href="{% url 'delete' kid.id %}" class="btn btn-danger">삭제</a>
-                {% endif %}</td>
+            <a href="{% url 'detail' myfavor.fav_kid.id %}" >{{ myfavor.fav_kid.title }}</a>
+                <a href="{% url 'mydelete' myfavor.fav_kid.id %}" class="btn btn-danger">즐겨찾기 삭제</a>
+                </td>
         </div>
     </div>
 </div>
@@ -59,9 +55,5 @@
     </ul>
 </nav>
 {% endif %}
-<script>
-$(document).ready(function(){
-    //$("#adminBtn").click(goAdmin);
-});	
-</script>
+
 {% endblock %}

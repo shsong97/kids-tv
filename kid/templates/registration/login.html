@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}User Login{% endblock %}
+{% block title %}로그인{% endblock %}
 {% block content %}
 <style>
 input { margin-top: 5px; }
@@ -9,10 +9,10 @@ button { margin-top: 5px; }
     <div class="right-box">
         <div class="white-box logonbox">
             <div class="page-header">
-                <h4>Login</h4>
+                <h4>로그인</h4>
             </div>
             {% if form.has_errors %}
-            <p> Your username and password didn't match. Please try again.</p>
+            <p> 아이디나 패스워드가 다릅니다. 다시 해보세요.</p>
             {% endif %}
             <div class="page-body">
                 <form method="post" action=".">
@@ -25,22 +25,22 @@ button { margin-top: 5px; }
                     <div>
                         <div class="control-group">
                             <div class="controls">
-                                <lable for="username">Username</lable><input class="form-control" type="text" id="username" name="username"  placeholder="Username">
+                                <lable for="username">아이디</lable><input class="form-control" type="text" id="username" name="username"  placeholder="Username">
                             </div>
                         </div>
                         <div class="control-group">
                             <div class="controls">
-                                <lable for="password">Password</lable><input class="form-control" type="password" name="password" id="password" placeholder="Password">
+                                <lable for="password">비밀번호</lable><input class="form-control" type="password" name="password" id="password" placeholder="Password">
                             </div>
                         </div>
                         <div class="control-group">
                             <div class="controls">
-                                <button type="submit" class="form-control btn btn-success">Login</button>
+                                <button type="submit" class="form-control btn btn-success">로그인</button>
                             </div>
                         </div>
                         <div class="control-group">
                             <div class="controls">
-                                    <a href="/resetpassword"><font size="2">forgot your password?</font></a>
+                                    <a href="/resetpassword"><font size="2">비밀번호를 잊으셨나요?</font></a>
                             </div>
                         </div>
 

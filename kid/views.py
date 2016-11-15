@@ -366,7 +366,7 @@ def register_page(request):
     else:
         form=RegistrationForm()
 
-    temp_param='Register'
+    temp_param='아이디 등록'
     category1 = Category1.objects.order_by('title')
     user_param={'form':form,'temp_param':temp_param, 'category1' : category1}
     return render(request,'registration/reg_form_template.html',user_param)
@@ -380,7 +380,7 @@ def change_password(request):
             return redirect('/')
     else:
         form = PasswordChangeForm(None)
-    temp_param='Change Password'
+    temp_param='비밀번호 변경'
     user_param={'form':form,'temp_param':temp_param}
     return render(request,'registration/reg_form_template.html',user_param)
 
@@ -393,14 +393,14 @@ def reset_password(request):
             return render(request,'registration/mail_send.html')
     else:
         form=PasswordResetForm()
-    temp_param='Reset Password'
+    temp_param='비밀번호 초기화'
     category1 = Category1.objects.order_by('title')
     user_param={'form':form,'temp_param':temp_param,'category1' : category1}
     return render(request,'registration/reg_form_template.html',user_param)
 
 @login_required(login_url=login_url)
 def user_profile_view(request):
-    temp_param='Change Profile'
+    temp_param='사용자 정보 변경'
     if request.user:
         kid_user = KidUser.objects.get(kid_user=request.user)
         form=ViewUserProfile(instance=kid_user)
@@ -418,3 +418,87 @@ def user_profile_view(request):
 def page_not_found_view(request):
     return render(request,'page_not_found.html')
 
+@login_required(login_url=login_url)
+def myfavorite(request):
+    kid_user = KidUser.objects.get(kid_user=request.user)
+    try:
+        kids_items = Favorite.objects.filter(fav_user=kid_user)
+    except:
+        kids_items = None
+
+    search_field = ''
+    if 'search_field' in request.GET:
+        if request.GET['search_field'] is not None:
+            search_field = request.GET['search_field']
+            # if favorites is not None:
+            #     kids_items = favorites #favorites.Kid.objects.filter(title__icontains=search_field).order_by('-update_date')
+
+    paginator=Paginator(kids_items,ITEMS_PER_PAGE)
+
+    try:
+        page=int(request.GET['page'])
+    except:
+        page=1
+    try:
+        kids_items=paginator.page(page)
+    except:
+        raise Http404
+
+    page_list = []
+    has_prev10=False
+    has_next10=False
+    prev_page10=0
+    next_page10=0
+    from_page=0
+    total_page = paginator.num_pages
+    if total_page > PAGE_COUNT and page + PAGE_COUNT < total_page:
+        has_next10 = True
+        next_page10 = (( page + PAGE_COUNT ) // PAGE_COUNT) * PAGE_COUNT + 1
+
+    if page > PAGE_COUNT:
+        has_prev10 = True
+        prev_page10 = (( page - PAGE_COUNT ) // PAGE_COUNT) * PAGE_COUNT + 1
+
+    from_page = int( page // PAGE_COUNT ) * PAGE_COUNT + 1
+
+    if from_page + PAGE_COUNT < total_page:
+        page_size = PAGE_COUNT
+    else:
+        page_size = total_page - from_page + 1
+
+    page_size = int(page_size)
+
+    for i in range(page_size):
+        page_list.append((i+from_page))
+
+    context = {'search_field' : search_field,
+               'show_paginator':paginator.num_pages>1,
+               'has_prev':kids_items.has_previous(),
+               'has_next':kids_items.has_next(),
+               'page':page,
+               'pages':paginator.num_pages,
+               'page_list' : page_list,
+               'next_page':page+1,
+               'prev_page':page-1,
+               'has_prev10':has_prev10,
+               'has_next10':has_next10,
+               'prev_page10':prev_page10,
+               'next_page10':next_page10,
+               'myfavorites': kids_items
+              }
+    return render(request,'myfavorite.html',context)
+
+@login_required(login_url=login_url)
+def mydelete(request, kid_id):
+    kid_user = KidUser.objects.get(kid_user=request.user)
+    fav_kid = Kid.objects.get(id=kid_id)
+
+    try:
+        favorite = Favorite.objects.get(fav_kid=fav_kid, fav_user=kid_user)
+    except:
+        favorite = None
+
+    if favorite:
+        favorite.delete()
+
+    return HttpResponseRedirect('/myfavorite')
