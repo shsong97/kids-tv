@@ -373,6 +373,7 @@ def register_page(request):
 
 @login_required(login_url=login_url)
 def change_password(request):
+    category1 = Category1.objects.order_by('title')
     if request.POST:
         form = PasswordChangeForm(user=request.user, data=request.POST)
         if form.is_valid():
@@ -381,7 +382,7 @@ def change_password(request):
     else:
         form = PasswordChangeForm(None)
     temp_param='비밀번호 변경'
-    user_param={'form':form,'temp_param':temp_param}
+    user_param={'form':form,'temp_param':temp_param, 'category1' : category1}
     return render(request,'registration/reg_form_template.html',user_param)
 
 def reset_password(request):
@@ -401,6 +402,7 @@ def reset_password(request):
 @login_required(login_url=login_url)
 def user_profile_view(request):
     temp_param='사용자 정보 변경'
+    category1 = Category1.objects.order_by('title')
     if request.user:
         kid_user = KidUser.objects.get(kid_user=request.user)
         form=ViewUserProfile(instance=kid_user)
@@ -411,7 +413,7 @@ def user_profile_view(request):
         if form.is_valid():
             form.save()
 
-    user_param={'form':form,'temp_param':temp_param}
+    user_param={'form':form,'temp_param':temp_param,'category1': category1,}
     return render(request,'registration/reg_form_template.html',user_param)
 
 
@@ -420,18 +422,19 @@ def page_not_found_view(request):
 
 @login_required(login_url=login_url)
 def myfavorite(request):
+    category1 = Category1.objects.order_by('title')
     kid_user = KidUser.objects.get(kid_user=request.user)
-    try:
-        kids_items = Favorite.objects.filter(fav_user=kid_user)
-    except:
-        kids_items = None
 
     search_field = ''
-    if 'search_field' in request.GET:
-        if request.GET['search_field'] is not None:
-            search_field = request.GET['search_field']
-            # if favorites is not None:
-            #     kids_items = favorites #favorites.Kid.objects.filter(title__icontains=search_field).order_by('-update_date')
+    try:
+        if 'search_field' in request.GET:
+            if request.GET['search_field'] is not None:
+                search_field = request.GET['search_field']
+                kids_items = Favorite.objects.filter(fav_user=kid_user,fav_kid__title__icontains=search_field)
+        else:
+            kids_items = Favorite.objects.filter(fav_user=kid_user)
+    except:
+        kids_items = None
 
     paginator=Paginator(kids_items,ITEMS_PER_PAGE)
 
@@ -484,7 +487,8 @@ def myfavorite(request):
                'has_next10':has_next10,
                'prev_page10':prev_page10,
                'next_page10':next_page10,
-               'myfavorites': kids_items
+               'myfavorites': kids_items,
+               'category1': category1,
               }
     return render(request,'myfavorite.html',context)
 
@@ -496,7 +500,7 @@ def mydelete(request, kid_id):
     try:
         favorite = Favorite.objects.get(fav_kid=fav_kid, fav_user=kid_user)
     except:
-        favorite = None
+        favorite =None
 
     if favorite:
         favorite.delete()
