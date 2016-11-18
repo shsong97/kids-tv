@@ -34,7 +34,11 @@ def home(request, cat_name1='All', cat_name2=''):
         cat2=get_object_or_404(Category2,title=cat_name2)
         kids_items=cat2.kid_set.order_by('-update_date')
     else:
-        kids_items = Kid.objects.order_by('-update_date')
+        if cat_name1 != 'All' and cat_name1 != '':
+            cat1=Category1.objects.filter(title=cat_name1)
+            kids_items =Kid.objects.select_related('category__parent_category').filter(category__parent_category__in=cat1)
+        else:
+            kids_items = Kid.objects.order_by('-update_date')
 
     paginator=Paginator(kids_items,ITEMS_PER_PAGE)
 
@@ -273,7 +277,7 @@ def detail(request, kid_id):
     kid_item = get_object_or_404(Kid,id=kid_id)
     like_count = Favorite.objects.filter(fav_kid=kid_item).count()
     my_click = False
-    
+
     try:
         if request.user.is_anonymous:
             kid_user=None

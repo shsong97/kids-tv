@@ -6,7 +6,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # Add config var SECRET_KEY and value
 DEFAULT_SECRET_KEY = 'n+g79y=q+bg*)mm_e=_pyl)t0i5x1=iuo8q2g02*mhbke*35jy'
 SECRET_KEY = os.environ.get('SECRET_KEY', DEFAULT_SECRET_KEY)
-DEBUG = bool(os.environ.get('DEBUG_MODE', ''))
+DEBUG = bool(os.environ.get('DEBUG_MODE', 'True'))
 
 # Application definition
 
