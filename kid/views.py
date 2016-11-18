@@ -273,8 +273,9 @@ def detail(request, kid_id):
     kid_item = get_object_or_404(Kid,id=kid_id)
     like_count = Favorite.objects.filter(fav_kid=kid_item).count()
     my_click = False
+    
     try:
-        if request.user == AnonymousUser:
+        if request.user.is_anonymous:
             kid_user=None
         else:
             kid_user = KidUser.objects.get(kid_user=request.user)
@@ -283,6 +284,7 @@ def detail(request, kid_id):
             my_click = True
     except:
         favorite = None
+
     category1 = Category1.objects.order_by('title')
 
     return render(request,'detail.html', {
