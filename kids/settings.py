@@ -106,10 +106,13 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 # gmail setting
 SITE_ID = 1
+import json
+with open(os.path.join(BASE_DIR, 'credentials.json'),'r') as f:
+    data=json.loads(f.read())
 
-EMAIL_HOST='smtp.gmail.com'
-EMAIL_PORT=587
-EMAIL_HOST_USER='shsong97@gmail.com'
-EMAIL_HOST_PASSWORD='tmdgns1997'
+EMAIL_HOST=data['EMAIL_HOST']
+EMAIL_PORT=data['EMAIL_PORT']
+EMAIL_HOST_USER=data['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD=data['EMAIL_HOST_PASSWORD']
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'shsong97@gmail.com'
+DEFAULT_FROM_EMAIL = data['DEFAULT_FROM_EMAIL']

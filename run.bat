@@ -6,3 +6,5 @@ git commit -am %1
 git push heroku master
 @echo heroku db migration
 heroku run python manage.py migrate
+@echo github update
+git push origin master
