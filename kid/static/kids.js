@@ -43,9 +43,9 @@ function button_like() {
             console.log(result)
             item.find("#span_like").text(result['like_count']);
             if(result['my_click'])
-                item.find("#button_like").attr('class',"btn btn-info");
+                item.find("#button_like").attr('class',"btn-like btn-display");
             else
-                item.find("#button_like").attr('class',"btn btn-warning");
+                item.find("#button_like").attr('class',"btn-unlike btn-display");
         },
         error:function(e) {
             alert(e.responseText);

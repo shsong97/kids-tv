@@ -4,8 +4,13 @@
 
 <div class="white-box">
 <ol class="breadcrumb">
-  <li><a href="/watch/{{ cat_name1 }}">{{ cat_name1 }}</a></li>
-  <li><a href="/watch/{{ cat_name1 }}/{{ cat_name2 }}">{{ cat_name2 }}</a></li>
+    {% if cat_name1 %}
+    <li><a href="/watch/{{ cat_name1 }}">{{ cat_name1 }}</a></li>
+    <li><a href="/watch/{{ cat_name1 }}/{{ cat_name2 }}">{{ cat_name2 }}</a></li>
+    {% else %}
+    <li><a href="/">All</a></li>
+    <li> </li>
+    {% endif %}
 </ol>
 <form action="/search" class="form-search">
     <div class="input-group">
@@ -59,9 +64,6 @@
     </ul>
 </nav>
 {% endif %}
-<script>
-$(document).ready(function(){
-    //$("#adminBtn").click(goAdmin);
-});	
-</script>
+
+
 {% endblock %}

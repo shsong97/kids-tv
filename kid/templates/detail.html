@@ -1,7 +1,7 @@
 {% extends "base.html" %}
+{% load humanize %}
 {% block title %}{{ kid.title }} {% endblock %}
 {% block content %}
-
 <style>
   /* Large devices (large desktops, 1200px and up) */
   @media screen and (min-width: 1200px) {
@@ -21,24 +21,45 @@
   @media screen and (max-width: 768px) {
     #iframe-youtube { width:100%; height:360px; }
   }
+  .btn-display {
+  	padding: 6px 12px 6px 12px;
+  	background-color: #ffffff;
+  	display: inline-block;
+  	text-decoration: none;
+  	width: 60px;
+  	text-align: center;
+  	border: 0 solid transparent;
+  	border-style: none;
+  }
+  .btn-like {
+  	color: red;
+  }
+  .btn-unlike  {
+  	color:black;
+  }
+  .bottom-line {
+  	border-bottom: 1px solid #e2e2e2;
+  	padding-bottom: 1px;
+  	margin-bottom: 10px;
+  }
 </style>
 <div class="white-box form-group">
-  <h4>{{ kid.title }}</h4>
-    <div class="embed-responsive embed-responsive-16by9">
+    <div class="embed-responsive embed-responsive-16by9 iframe-youtube">
       <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ kid.youtube_id }}" frameborder="0" allowfullscreen></iframe>
     </div>
   <br />
+  <h4>{{ kid.title }}</h4>
+  <div class="text-right bottom-line"><h4>조회수 {{ view_count|intcomma }} 회</h4></div>
   <div class="row">
-    <div class="left col-sm-2 col-md-2">
-    <!--{{ kid.id }}/favorite-->
-    <a href="#" class="btn">반응<span id="span_like" value="{{ kid.id }}">{{like_count}}</span>개</a>
+    <div class="left col-sm-6 col-md-6">
+    
     </div>
-    <div class="text-right col-sm-10 col-md-10">
+    <div class="text-right col-sm-6 col-md-6">
       {% if user.is_authenticated %}
-      <button class="btn btn-{% if my_click %}warning{% else %}info{% endif %}" id="button_like"><i class="glyphicon glyphicon-heart"></i></button>
+      <button class="btn-display btn-{% if my_click %}like{%else%}unlike{% endif %}" id="button_like"><i class="glyphicon glyphicon-heart"></i> <span id="span_like" value="{{ kid.id }}">{{like_count}}</span></button>
       {% endif %}
       {% if user.is_staff %}
-      <a href="/delete/{{ kid.id }}" class="btn btn-danger">삭제</a>
+      <a href="/delete/{{ kid.id }}" class="btn-display">삭제</a>
       {% endif %}
     </div>
   </div>  

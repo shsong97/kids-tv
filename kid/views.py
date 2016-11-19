@@ -25,7 +25,7 @@ from datetime import datetime
 
 login_url='/login'
 ITEMS_PER_PAGE=10
-PAGE_COUNT = 10
+PAGE_COUNT = 5
 
 def home(request, cat_name1='All', cat_name2=''):
     search_field = ''
@@ -275,7 +275,9 @@ def delete(request, kid_id):
 
 def detail(request, kid_id):
     kid_item = get_object_or_404(Kid,id=kid_id)
-    like_count = Favorite.objects.filter(fav_kid=kid_item).count()
+    kid_item.view_count += 1
+    kid_item.save()
+
     my_click = False
 
     try:
@@ -289,12 +291,14 @@ def detail(request, kid_id):
     except:
         favorite = None
 
+    like_count = Favorite.objects.filter(fav_kid=kid_item).count()
     category1 = Category1.objects.order_by('title')
 
     return render(request,'detail.html', {
         'category1' : category1, 
         'kid' : kid_item, 
         'like_count': like_count,
+        'view_count' : kid_item.view_count,
         'my_click' : my_click})
 
 @login_required(login_url=login_url)
@@ -304,7 +308,6 @@ def detail_like(request, kid_id):
     my_click = False
     try:
         favorite = Favorite.objects.get(fav_kid=fav_kid, fav_user=kid_user)
-        my_click = True
     except:
         favorite = None
 
@@ -312,6 +315,8 @@ def detail_like(request, kid_id):
         favorite.delete()
     else:
         Favorite.objects.create(fav_kid=fav_kid, fav_user=kid_user)
+        my_click = True
+
     like_count=Favorite.objects.filter(fav_kid=kid_id).count()
     data_dict={'like_count':like_count, 'my_click' : my_click}
     return JsonResponse(data_dict)
