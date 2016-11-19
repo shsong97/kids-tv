@@ -10,9 +10,16 @@ from .models import KidUser
 class ViewUserProfile(ModelForm):
     class Meta:
         model=KidUser
-        # fields = '__all__'
-        fields = ['kid_user','address',]
+        fields = ['kid_user','address','gender','birthday']
+
+    def __init__(self, *args, **kwargs):
+        super(ViewUserProfile, self).__init__(*args, **kwargs)
+        years = [ year+1940 for year in range(100)]
         
+        self.fields['kid_user'].widget = forms.HiddenInput(attrs={'readonly':'readonly'})
+        self.fields['birthday'].widget = forms.SelectDateWidget(years=years)
+        
+
 class RegistrationForm(forms.Form):
     username=forms.CharField(label='아이디',max_length=30,widget=forms.TextInput(attrs={'class' : 'form-control'}))
     email=forms.EmailField(label='Email',widget=forms.TextInput(attrs={'class' : 'form-control'}))
@@ -51,4 +58,4 @@ class RegistrationForm(forms.Form):
         except ObjectDoesNotExist:
             return email
         raise forms.ValidationError('already exists email')
-    
+     

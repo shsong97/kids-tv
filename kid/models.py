@@ -1,9 +1,7 @@
 # -*- coding:utf-8 -*-
 from django.db import models
-import datetime
 from django.utils import timezone
 from django.contrib.auth.models import User
-from datetime import datetime
 
 # Create your models here.
 class Category1(models.Model):
@@ -48,11 +46,12 @@ class Kid(models.Model):
 
 class KidUser(models.Model):
     kid_user = models.ForeignKey(User)
-    address = models.CharField(max_length=200)
-    invalid_password_count = models.IntegerField(default=0)
-    last_login_date = models.DateTimeField(default=datetime.today())
-    gender = models.CharField(max_length=1,default='M')
-    birthday = models.CharField(max_length=10,default='2000-01-01')
+    address = models.CharField('주소',max_length=200)
+    invalid_password_count = models.IntegerField('비밀번호 실패횟수',default=0)
+    last_login_date = models.DateTimeField('마지막접속일',default=timezone.now)
+    GENDER_CHOICE =(('M','남자'),('F','여자'))
+    gender = models.CharField('성별',max_length=1,default='M',choices=GENDER_CHOICE)
+    birthday = models.CharField('생년월일',max_length=10,default='2000-01-01')
     class Meta:
         verbose_name = "KidUser"
         verbose_name_plural = "KidUsers"

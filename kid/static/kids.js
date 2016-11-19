@@ -40,7 +40,7 @@ function button_like() {
         url:"/detail/"+kids_id+"/like",
         dataType:'json',
         success:function(result){
-            console.log(result)
+            //console.log(result)
             item.find("#span_like").text(result['like_count']);
             if(result['my_click'])
                 item.find("#button_like").attr('class',"btn-like btn-display");
