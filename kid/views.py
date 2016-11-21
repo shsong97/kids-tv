@@ -441,9 +441,9 @@ def myfavorite(request):
         if 'search_field' in request.GET:
             if request.GET['search_field'] is not None:
                 search_field = request.GET['search_field']
-                kids_items = Favorite.objects.filter(fav_user=kid_user,fav_kid__title__icontains=search_field)
+                kids_items = Favorite.objects.filter(fav_user=kid_user,fav_kid__title__icontains=search_field).order_by('-update_date')
         else:
-            kids_items = Favorite.objects.filter(fav_user=kid_user)
+            kids_items = Favorite.objects.filter(fav_user=kid_user).order_by('-update_date')
     except:
         kids_items = None
 

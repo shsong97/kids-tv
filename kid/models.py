@@ -9,18 +9,12 @@ class Category1(models.Model):
 
     def __unicode__(self):
         return self.title
-        
-    def __str__(self):
-        return self.title
 
 class Category2(models.Model):
     title = models.CharField(max_length=200)
     parent_category = models.ForeignKey(Category1)
 
     def __unicode__(self):
-        return self.title
-
-    def __str__(self):
         return self.title
 
     class Meta:
@@ -35,10 +29,8 @@ class Kid(models.Model):
     category = models.ForeignKey(Category2)
     youtube_id = models.CharField(max_length=100, default='')
     view_count = models.IntegerField(default=0)
-    def __unicode__(self):
-        return self.title
     
-    def __str__(self):
+    def __unicode__(self):
         return self.title
 
     def get_absolute_url(self):
@@ -56,13 +48,13 @@ class KidUser(models.Model):
         verbose_name = "KidUser"
         verbose_name_plural = "KidUsers"
 
-    def __str__(self):
+    def __unicode__(self):
         return self.kid_user.username
 
 
 class Favorite(models.Model):
     fav_user = models.ForeignKey(KidUser)
     fav_kid = models.ForeignKey(Kid)  
-
+    update_date = models.DateTimeField('수정일',default=timezone.now)
 
     

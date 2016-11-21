@@ -20,6 +20,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'kid',
+    'django_nose',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -116,3 +117,12 @@ EMAIL_HOST_USER=data['EMAIL_HOST_USER']
 EMAIL_HOST_PASSWORD=data['EMAIL_HOST_PASSWORD']
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = data['DEFAULT_FROM_EMAIL']
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=kid',
+    '--cover-html',
+    '--failed', '--stop'
+]

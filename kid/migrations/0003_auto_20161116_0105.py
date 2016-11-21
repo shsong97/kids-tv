@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 import datetime
 from django.db import migrations, models
-
+import django.utils.timezone
 
 class Migration(migrations.Migration):
 
@@ -31,6 +31,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='kiduser',
             name='last_login_date',
-            field=models.DateTimeField(default=datetime.datetime(2016, 11, 16, 1, 5, 9, 113000)),
+            field=models.DateTimeField(default=django.utils.timezone.now),
         ),
     ]
