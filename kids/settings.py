@@ -123,6 +123,5 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 NOSE_ARGS = [
     '--with-coverage',
     '--cover-package=kid',
-    '--cover-html',
-    '--failed', '--stop'
+    # '--cover-html',
 ]
